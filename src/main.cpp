@@ -46,12 +46,13 @@ public:
     } 
 
     // Add functions for checking the valid move
-    bool validMove(int a[9][9], int row, int col, int input)
+    // This will be used for sudoku solver 
+    bool valid(int a[9][9], int row, int col, int num)
     {
         // loop to move through row to check for the same number
         for (int i = 0; i < 9; i++)
         {
-            if (a[row][i] == input)
+            if (a[row][i] == num)
             {
                 return false;
             }
@@ -60,7 +61,7 @@ public:
         // loop to move through column to check for the same number
         for (int j = 0; j < 9; j++)
         {
-            if (a[j][col] == input)
+            if (a[j][col] == num)
             {
                 return false;
             }
@@ -73,13 +74,54 @@ public:
         {
             for (int j = 0; j < 9; j++)
             {
-                if (a[i + startingRow][j + startingCol] == input)
+                if (a[i + startingRow][j + startingCol] == num)
                 {
                     return false;
                 }
             }
         }
 
+        return true;
+    }
+
+    // Function to check for a valid entered move
+    // This will check if the user entered correct number
+    bool validMove(int row, int col, int input)
+    {
+        // loop to move through row to check for the same number
+        for (int i = 0; i < 9; i++)
+        {
+            if (i != col && grid[row][i] == input)
+            {
+                return false;
+            }
+        }
+
+        // loop to move through column to check for the same number
+        for (int j = 0; j < 9; j++)
+        {
+            if (j != row && grid[j][col] == input)
+            {
+                return false;
+            }
+        }
+
+        // loop to check for the same number inside a box in sudoku
+        int startingRow = row - row % 3;
+        int startingCol = col - col % 3;
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                int r = i + startingRow;
+                int c = j + startingCol;
+            if ((r != row || c != col) && grid[r][c] == input)
+            {
+                return false;
+            }
+            }
+        }
+        
         return true;
     }
 };

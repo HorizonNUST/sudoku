@@ -45,29 +45,45 @@ public:
         }
     } 
 
-}
+    // Add functions for checking the valid move
+    bool validMove(int a[9][9], int row, int col, int input)
+    {
+        // loop to move through row to check for the same number
+        for (int i = 0; i < 9; i++)
+        {
+            if (a[row][i] == input)
+            {
+                return false;
+            }
+        }
+        
+        // loop to move through column to check for the same number
+        for (int j = 0; j < 9; j++)
+        {
+            if (a[j][col] == input)
+            {
+                return false;
+            }
+        }
+        
+        // loop to check for the same number inside a box of the sudoku
+        int startingRow = row - row % 3;
+        int startingCol = col - col % 3;
+        for (int i = 0; i < 9; i++)
+        {
+            for (int j = 0; j < 9; j++)
+            {
+                if (a[i + startingRow][j + startingCol] == input)
+                {
+                    return false;
+                }
+            }
+        }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        return true;
+    }
+};
 
 int main() {
-    std::print("Hello from C++ template!\n");
-
     return 0;
 }

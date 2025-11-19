@@ -124,6 +124,36 @@ public:
         
         return true;
     }
+
+    // Function to solve the sudoku board
+    bool solveSudoku(int b[9][9])
+    {
+        for (int row = 0; row < 9; row++)
+        {
+            for (int col = 0; col < 9; col++)
+            {
+                if (b[row][col] == 0) // Checks if the block is filled by number or not
+                {
+                    for (int num = 1; num <= 9; num++) // loop to fill numbers from 1 to 9
+                    {
+                        if (valid(b, row, col, num))
+                        {
+                            b[row][col] = num;
+                            // Using recursion to fill all the board
+                            // If condition will become true when the last element is filled
+                            if (solveSudoku(b))
+                            {
+                                return true;
+                            }
+                            // if no number is found then reset the block to 0 and loop again
+                            b[row][col] = 0;
+                        }
+                    }
+                    return false;
+                }
+            }
+        }
+    }
 };
 
 int main() {

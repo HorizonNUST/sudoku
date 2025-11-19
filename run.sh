@@ -20,6 +20,25 @@ if [[ "$1" == "--release" ]]; then
 fi
 # parsing arguments end
 
+# detect platform
+echo -e "${CYAN}Detecting platform...${RESET}"
+
+PLATFORM="unknown"
+
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    PLATFORM="linux"
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+    PLATFORM="macos"
+elif [[ "$OSTYPE" == "msys"* || "$OSTYPE" == "cygwin"* || "$OSTYPE" == "win"* ]]; then
+    PLATFORM="windows"
+else
+    echo -e "${RED}Unsupported OS type: $OSTYPE${RESET}"
+    exit 1
+fi
+# platform detect end
+
+echo -e "${GREEN}Detected platform: ${PURPLE}$PLATFORM${RESET}"
+
 clear
 clear
 clear
@@ -29,7 +48,10 @@ set -e
 mkdir -p build
 
 echo -e "${YELLOW}Generate build files CMake ... ${RESET}"
-cmake -B build -S . -DCMAKE_BUILD_TYPE=$build_type
+cmake -B build -S . \
+    -DCMAKE_TOOLCHAIN_FILE=$(pwd)/external/vcpkg/scripts/buildsystems/vcpkg.cmake \
+    -DVCPKG_TARGET_TRIPLET=arm64-osx \
+    -DCMAKE_BUILD_TYPE=$build_type
 
 echo -e "${YELLOW}Compiling using CMake ... ${RESET}"
 cmake --build build --config Release

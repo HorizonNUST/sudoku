@@ -227,6 +227,49 @@ public:
 
         score = 0; // Initializes the score to 0
     }
+
+    void selectCell(int row, int col) 
+    {
+     selRow = row;
+     selCol = col;
+    }
+
+    // Functiont to place the number
+    bool inputNumber(int num)
+    {
+        if (selRow >= 0 && selRow < 9 && selCol >= 0 && selCol < 9)
+        {
+            if(!fixed[selRow][selCol])
+            {
+                grid[selRow][selCol] = num;
+
+                // Apply conditions to check if the number entered is valid or not
+                if (num != 0)
+                {
+                    // Check if the input number is valid or not 
+                    if (validMove(selRow, selCol, num))
+                    {
+                        if (num == sol[selRow][selCol])
+                        {
+                            score += 10; // Incrementing by 10 if correct 
+                        }
+                        else
+                        {
+                            score -= 5; // Decrementing by 5 is imcorrect
+                        }
+                    }
+                    else
+                    {
+                        score -= 5;
+                    }
+                }
+                return true;
+            }
+        } 
+        return false;
+    }
+
+
 };
 
 int main() {

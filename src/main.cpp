@@ -29,9 +29,10 @@ private:
     int fixed[9][9];
     int selRow;
     int selCol;
+    int score;
 
 public:
-    Sudoku() : selRow(-1), selCol(-1) 
+    Sudoku() : selRow(-1), selCol(-1), score(0) 
     {
         // Nested for loops to initialize the boxes in the sudoku board
         for (int i = 0; i < 9; i++)
@@ -175,6 +176,56 @@ public:
                 }
             }
         }
+    }
+
+    // Funciton to reset the board and generate a new puzzle
+    void generatePuzzle(int difficulty)
+    {
+        // Resetting the entire board to 0
+        for (int i = 0; i < 9; i++)
+        {
+            for (int j = 0; j < 9; j++)
+            {
+                sol[i][j] = 0;
+            }
+        }
+
+        // Calling funcitons to fill diagonal and generate solution
+        fillDiagonal();
+        solveSudoku(sol);
+
+        // for loop to solve the board after calling the functions. This is initial condition
+        for (int i = 0; i < 9; i++)
+        {
+            for (int j = 0; j < 9; j++)
+            grid[i][j] = sol[i][j]; // Initializes the grid by sol[][] elements 
+            fixed[i][j] = true; // Fixes the values
+        }
+
+        // Declaring a vector that will store the 81 coordinates
+        std::vector<std::pair<int, int>> cells;
+        // nested for loop to initialize by coordinates of each cell
+        for (int i = 0; i < 9; i++)
+        {
+            for (int j = 0; j < 9; j++)
+            {
+                cells.push_back({i, j}); // this creates a list of coordinates. push_back creates new element at each iteration
+            }
+        }
+
+        // Shuffling the list of cells
+        std::shuffle(cells.begin(), cells.end(), std::mt19937(std::random_device()()));
+        // For loop to remove the entries and initialize it back to 0. 
+        for (int i = 0; i < difficulty; i++)
+        {
+            // Initializing the rows and column by the coordinates of the cells already made
+            int rows = cells[i].first;
+            int col = cells[i].second;
+            grid[rows][col] = 0; // Sets the grid element to 0
+            fixed[rows][col] = false; // Sets the fixed cell to false, so that the user can enter the element
+        }
+
+        score = 0; // Initializes the score to 0
     }
 };
 

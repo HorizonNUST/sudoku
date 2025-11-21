@@ -155,6 +155,27 @@ public:
         }
         return true;
     }
+
+    // Function to randomly fill the diagonal box of the sudoku board
+    void fillDiagonal()
+    {
+        for (int i = 0; i < 9; i++)
+        {
+            std::vector<int> nums = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+            static std::mt19937 rng(std::random_device{}());
+            std::shuffle(nums.begin(), nums.end(), rng); // Shuffles the vector array so that each box can be randomly filled
+
+            // Using nested loop to fill the 3x3 diagonal box in sudoku
+            int pos = 0;
+            for (int j = 0; j < 3; j++)
+            {
+                for (int k = 0; k < 3; k++)
+                {
+                    sol[i + j][i + k] = nums[pos++];
+                }
+            }
+        }
+    }
 };
 
 int main() {

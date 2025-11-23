@@ -344,6 +344,11 @@ public:
             return false;
         return (selRow / 3 == row / 3) && (selCol / 3 == col / 3);
     }
+    // Function to return score
+    int getScore() const
+    {
+        return score;
+    }
 };
 
 int main() {

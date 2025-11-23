@@ -269,6 +269,23 @@ public:
         return false;
     }
 
+    // Function to give hints to user
+    void hint()
+    {
+        // Apply if condition to check if the right grid is selected or not 
+        if (selRow >= 0 && selRow < 9 && selCol >= 0 && selCol < 9)
+        {
+            // Check if the grid is fixed or not 
+            if (!fixed[selRow][selCol])
+            {
+                grid[selRow][selCol] = sol[selRow][selCol];
+                score -= 10;
+            }
+        }
+    }
+
+    
+
 
 };
 

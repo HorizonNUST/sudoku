@@ -317,6 +317,12 @@ public:
     {
         return grid[row][col];
     }
+    // Function to check if the cell is fixed or not 
+    bool isFixed(int row, int col) const
+    {
+        return fixed[row][col];
+    }
+
 };
 
 int main() {

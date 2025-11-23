@@ -126,7 +126,7 @@ public:
         return true;
     }
 
-    // Function to solve the sudoku board
+    // Function to solve the sudoku board and store the result 
     bool solveSudoku(int b[9][9])
     {
         for (int row = 0; row < 9; row++)
@@ -284,8 +284,33 @@ public:
         }
     }
 
-    
+    // Function to auto solve the board
+    void autoSolve()
+    {
+        // for loop to fill the grid by the sol of the board
+        for (int i = 0; i < 9; i++)
+        {
+            for (int j = 0; j < 9; j++)
+            {
+                grid[i][j] = sol[i][j]; // Puts the elements of sol[][] into grid[][]
+            }
+        }
+        score -= 20;
+    }
 
+    // Function to check for the win 
+    bool win()
+    {
+        for (int i = 0; i < 9; i++)
+        {
+            for (int j = 0; j < 9; j++)
+            {
+                if (grid[i][j] != sol[i][j])
+                    return false;
+            }
+        }
+        return true;
+    }
 
 };
 

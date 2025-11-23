@@ -327,6 +327,16 @@ public:
     {
         return selRow == row && selCol == col;
     }
+    // Function to check if the selected row is the same as given row
+    bool sameRow(int row) const
+    {
+        return selRow == row;
+    }
+    // Function to check if the selected column is same as given column
+    bool sameCol(int col) const
+    {
+        return selCol == col;
+    }
 
 };
 

@@ -337,7 +337,13 @@ public:
     {
         return selCol == col;
     }
-
+    // Function to check if the given cell is in the 3x3 box of the sudoku
+    bool sameBox(int row, int col) const
+    {
+        if (selRow < 0 || selCol < 0)
+            return false;
+        return (selRow / 3 == row / 3) && (selCol / 3 == col / 3);
+    }
 };
 
 int main() {

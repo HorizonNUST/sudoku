@@ -322,6 +322,11 @@ public:
     {
         return fixed[row][col];
     }
+    // Function to check if the selected cell matches the cell you are checkinf
+    bool isSel(int row, int col) const
+    {
+        return selRow == row && selCol == col;
+    }
 
 };
 

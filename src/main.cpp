@@ -311,7 +311,12 @@ public:
         }
         return true;
     }
-
+    
+    // Function to get a cell from the board
+    int getCell(int row, int col) const
+    {
+        return grid[row][col];
+    }
 };
 
 int main() {

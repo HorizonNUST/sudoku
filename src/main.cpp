@@ -351,6 +351,79 @@ public:
     }
 };
 
+// Drawing the menu of the sudoku board
+void menu(sf::RenderWindow& window, sf::Font& font) {
+    window.clear(sf::Color(250, 250, 250));
+
+    // Title
+    sf::Text title;
+    title.setFont(font);
+    title.setString("Sudoku");
+    title.setCharacterSize(80);
+    title.setFillColor(sf::Color(80, 120, 200));
+    title.setStyle(sf::Text::Bold);
+    sf::FloatRect titleBounds = title.getLocalBounds();
+    title.setPosition(300 - titleBounds.width / 2, 100);
+    window.draw(title);
+
+    // Subtitle
+    sf::Text subtitle;
+    subtitle.setFont(font);
+    subtitle.setString("Select Difficulty");
+    subtitle.setCharacterSize(40);
+    subtitle.setFillColor(sf::Color(0, 0, 0));
+    sf::FloatRect subtitleBounds = subtitle.getLocalBounds();
+    subtitle.setPosition(300 - subtitleBounds.width / 2, 200);
+    window.draw(subtitle);
+
+    // Easy button
+    sf::RectangleShape easyBtn(sf::Vector2f(250, 70));
+    easyBtn.setPosition(175, 280);
+    easyBtn.setFillColor(sf::Color(76, 175, 80));
+    window.draw(easyBtn);
+
+    sf::Text easyText;
+    easyText.setFont(font);
+    easyText.setString("Easy");
+    easyText.setCharacterSize(32);
+    easyText.setFillColor(sf::Color::White);
+    easyText.setStyle(sf::Text::Bold);
+    sf::FloatRect easyBounds = easyText.getLocalBounds();
+    easyText.setPosition(300 - easyBounds.width / 2, 295);
+    window.draw(easyText);
+
+    // Medium button
+    sf::RectangleShape mediumBtn(sf::Vector2f(250, 70));
+    mediumBtn.setPosition(175, 380);
+    mediumBtn.setFillColor(sf::Color(255, 152, 0));
+    window.draw(mediumBtn);
+
+    sf::Text mediumText;
+    mediumText.setFont(font);
+    mediumText.setString("Medium");
+    mediumText.setCharacterSize(32);
+    mediumText.setFillColor(sf::Color::White);
+    mediumText.setStyle(sf::Text::Bold);
+    sf::FloatRect mediumBounds = mediumText.getLocalBounds();
+    mediumText.setPosition(300 - mediumBounds.width / 2, 395);
+    window.draw(mediumText);
+
+    // Hard button
+    sf::RectangleShape hardBtn(sf::Vector2f(250, 70));
+    hardBtn.setPosition(175, 480);
+    hardBtn.setFillColor(sf::Color(244, 67, 54));
+    window.draw(hardBtn);
+
+    sf::Text hardText;
+    hardText.setFont(font);
+    hardText.setString("Hard");
+    hardText.setCharacterSize(32);
+    hardText.setFillColor(sf::Color::White);
+    hardText.setStyle(sf::Text::Bold);
+    sf::FloatRect hardBounds = hardText.getLocalBounds();
+    hardText.setPosition(300 - hardBounds.width / 2, 495);
+    window.draw(hardText);
+}
 int main() {
     return 0;
 }

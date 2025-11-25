@@ -1,5 +1,5 @@
 #include "SudokuUI.hpp"
-//#include "SudokuGame.hpp"
+#include "SudokuGame.hpp"
 #include <iostream>
 
 using namespace std;
@@ -21,7 +21,7 @@ int main() {
     // 0 = Easy (35% filled - 90 cells)
     // 1 = Medium (25% filled - 64 cells)
     // 2 = Hard (20% filled - 51 cells)
-    //game.startNewGame(difficulty);
+    game.startNewGame(difficulty);
     
     // Run the main game loop
     ui.run();

@@ -21,7 +21,7 @@ enum Difficulty
 };
 
 // Making class for sudoku that will hold the data for the game
-class Sudoku 
+class Sudoku
 {
 private:
     int grid[9][9];
@@ -32,7 +32,7 @@ private:
     int score;
 
 public:
-    Sudoku() : selRow(-1), selCol(-1), score(0) 
+    Sudoku() : selRow(-1), selCol(-1), score(0)
     {
         // Nested for loops to initialize the boxes in the sudoku board
         for (int i = 0; i < 9; i++)
@@ -44,10 +44,10 @@ public:
                 fixed[i][j] = false;
             }
         }
-    } 
+    }
 
     // Add functions for checking the valid move
-    // This will be used for sudoku solver 
+    // This will be used for sudoku solver
     bool valid(int a[9][9], int row, int col, int num)
     {
         // loop to move through row to check for the same number
@@ -58,7 +58,7 @@ public:
                 return false;
             }
         }
-        
+
         // loop to move through column to check for the same number
         for (int j = 0; j < 9; j++)
         {
@@ -67,7 +67,7 @@ public:
                 return false;
             }
         }
-        
+
         // loop to check for the same number inside a box of the sudoku
         int startingRow = row - row % 3;
         int startingCol = col - col % 3;
@@ -116,17 +116,17 @@ public:
             {
                 int r = i + startingRow;
                 int c = j + startingCol;
-            if ((r != row || c != col) && grid[r][c] == input)
-            {
-                return false;
-            }
+                if ((r != row || c != col) && grid[r][c] == input)
+                {
+                    return false;
+                }
             }
         }
-        
+
         return true;
     }
 
-    // Function to solve the sudoku board and store the result 
+    // Function to solve the sudoku board and store the result
     bool solveSudoku(int b[9][9])
     {
         for (int row = 0; row < 9; row++)
@@ -162,7 +162,7 @@ public:
     {
         for (int i = 0; i < 9; i++)
         {
-            std::vector<int> nums = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+            std::vector<int> nums = {1, 2, 3, 4, 5, 6, 7, 8, 9};
             static std::mt19937 rng(std::random_device{}());
             std::shuffle(nums.begin(), nums.end(), rng); // Shuffles the vector array so that each box can be randomly filled
 
@@ -179,7 +179,7 @@ public:
     }
 
     // Funciton to reset the board and generate a new puzzle
-    void generatePuzzle(int difficulty)
+    void makePuzzle(int difficulty)
     {
         // Resetting the entire board to 0
         for (int i = 0; i < 9; i++)
@@ -198,8 +198,8 @@ public:
         for (int i = 0; i < 9; i++)
         {
             for (int j = 0; j < 9; j++)
-            grid[i][j] = sol[i][j]; // Initializes the grid by sol[][] elements 
-            fixed[i][j] = true; // Fixes the values
+                grid[i][j] = sol[i][j]; // Initializes the grid by sol[][] elements
+            fixed[i][j] = true;         // Fixes the values
         }
 
         // Declaring a vector that will store the 81 coordinates
@@ -215,23 +215,23 @@ public:
 
         // Shuffling the list of cells
         std::shuffle(cells.begin(), cells.end(), std::mt19937(std::random_device()()));
-        // For loop to remove the entries and initialize it back to 0. 
+        // For loop to remove the entries and initialize it back to 0.
         for (int i = 0; i < difficulty; i++)
         {
             // Initializing the rows and column by the coordinates of the cells already made
             int rows = cells[i].first;
             int col = cells[i].second;
-            grid[rows][col] = 0; // Sets the grid element to 0
+            grid[rows][col] = 0;      // Sets the grid element to 0
             fixed[rows][col] = false; // Sets the fixed cell to false, so that the user can enter the element
         }
 
         score = 0; // Initializes the score to 0
     }
 
-    void selectCell(int row, int col) 
+    void selectCell(int row, int col)
     {
-     selRow = row;
-     selCol = col;
+        selRow = row;
+        selCol = col;
     }
 
     // Functiont to place the number
@@ -239,19 +239,19 @@ public:
     {
         if (selRow >= 0 && selRow < 9 && selCol >= 0 && selCol < 9)
         {
-            if(!fixed[selRow][selCol])
+            if (!fixed[selRow][selCol])
             {
                 grid[selRow][selCol] = num;
 
                 // Apply conditions to check if the number entered is valid or not
                 if (num != 0)
                 {
-                    // Check if the input number is valid or not 
+                    // Check if the input number is valid or not
                     if (validMove(selRow, selCol, num))
                     {
                         if (num == sol[selRow][selCol])
                         {
-                            score += 10; // Incrementing by 10 if correct 
+                            score += 10; // Incrementing by 10 if correct
                         }
                         else
                         {
@@ -265,17 +265,17 @@ public:
                 }
                 return true;
             }
-        } 
+        }
         return false;
     }
 
     // Function to give hints to user
     void hint()
     {
-        // Apply if condition to check if the right grid is selected or not 
+        // Apply if condition to check if the right grid is selected or not
         if (selRow >= 0 && selRow < 9 && selCol >= 0 && selCol < 9)
         {
-            // Check if the grid is fixed or not 
+            // Check if the grid is fixed or not
             if (!fixed[selRow][selCol])
             {
                 grid[selRow][selCol] = sol[selRow][selCol];
@@ -298,7 +298,7 @@ public:
         score -= 20;
     }
 
-    // Function to check for the win 
+    // Function to check for the win
     bool win()
     {
         for (int i = 0; i < 9; i++)
@@ -311,13 +311,13 @@ public:
         }
         return true;
     }
-    
+
     // Function to get a cell from the board
     int getCell(int row, int col) const
     {
         return grid[row][col];
     }
-    // Function to check if the cell is fixed or not 
+    // Function to check if the cell is fixed or not
     bool isFixed(int row, int col) const
     {
         return fixed[row][col];
@@ -352,7 +352,8 @@ public:
 };
 
 // Drawing the menu of the sudoku board
-void menu(sf::RenderWindow& window, sf::Font& font) {
+void menu(sf::RenderWindow &window, sf::Font &font)
+{
     window.clear(sf::Color(250, 250, 250));
 
     // Title
@@ -424,6 +425,26 @@ void menu(sf::RenderWindow& window, sf::Font& font) {
     hardText.setPosition(300 - hardBounds.width / 2, 495);
     window.draw(hardText);
 }
-int main() {
+int main()
+{
+    sf::RenderWindow window(sf::VideoMode(600, 700), "Sudoku Game");
+    window.setFramerateLimit(60);
+
+    sf::Font font;
+    if (!font.loadFromFile("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"))
+    {
+        if (!font.loadFromFile("C:\\Windows\\Fonts\\arial.ttf"))
+        {
+            return -1;
+        }
+    }
+
+    Sudoku game; // Declaring variable of name game of class Sudoku
+    State state = Menu; // Initializing the state of the game to menu
+    const float cellSize = 60.0f; // Sets the size of each sudoku cell to 60 pixels wide and tall
+    const float gridOffsetX = 30.0f; // Starts the grid 30 pixels from left side
+    const float gridOffsetY = 30.0f; // Starts the grid 30 pixels from top
+    // Setting won variable to false initially
+    bool won = false;
     return 0;
 }

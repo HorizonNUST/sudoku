@@ -464,7 +464,18 @@ int main()
         {
             float mouseX = event.mouseButton.x;
             float mouseY = event.mouseButton.y;
-        }
 
+            // Now we check for which button the user has clicked and then displaying the puzzle according to that
+            if (state == Menu)
+            {
+                // Generating easy puzzle if the easy button is pressed
+                if (mouseX >= 175 && mouseX <= 425 && mouseY >= 280 && mouseY <= 350)
+                {
+                    game.makePuzzle(Easy);
+                    state = Playing;
+                    won = false;
+                }
+            }
+        }
     }
 }

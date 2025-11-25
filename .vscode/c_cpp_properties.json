@@ -3,7 +3,9 @@
         {
             "name": "Mac",
             "includePath": [
-                "${workspaceFolder}/src/**"
+                "${workspaceFolder}/src/**",
+                "${workspaceFolder}/external/vcpkg/installed/arm64-osx/include",
+                "${workspaceFolder}/external/vcpkg/installed/x64-windows/include"
             ],
             "defines": [],
             "macFrameworkPath": [

@@ -198,8 +198,10 @@ public:
         for (int i = 0; i < 9; i++)
         {
             for (int j = 0; j < 9; j++)
+            {
                 grid[i][j] = sol[i][j]; // Initializes the grid by sol[][] elements
-            fixed[i][j] = true;         // Fixes the values
+                fixed[i][j] = true; // Fixes the values
+            }
         }
 
         // Declaring a vector that will store the 81 coordinates

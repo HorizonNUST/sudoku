@@ -482,6 +482,24 @@ int main()
                     state = Playing;
                     won = false;
                 }
+                // Generating hard puzzle if the hard button is pressed
+                else if (mouseX >= 175 && mouseX <= 425 && mouseY >= 480 && mouseY <= 550)
+                {
+                    game.makePuzzle(Hard);
+                    state = Playing;
+                    won = false;
+                }
+            }
+            // Now to apply conditions for if the state is playing
+            else if (state == Playing)
+            {
+                // Handles the cell selection in the sudoku board
+                if (mouseX >= gridOffsetX && mouseX < gridOffsetX + 9 * cellSize && mouseY >= gridOffsetY && mouseY < gridOffsetY + 9 * cellSize)
+                {
+                    int col = (mouseX - gridOffsetX) / cellSize;
+                    int row = (mouseY - gridOffsetY) / cellSize;
+                    game.selectCell(row, col);
+                }
             }
         }
     }

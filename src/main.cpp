@@ -447,4 +447,24 @@ int main()
     // Setting won variable to false initially
     bool won = false;
     return 0;
+
+    // Main game loop
+    while (window.isOpen())
+    {
+        sf::Event event; // Handles event 
+        while (window.pollEvent(event))
+        {
+            if (event.type == sf::Event::Closed) // Checks if the event is closed and then closes the window
+            {
+                window.close();
+            }
+        }
+        // Checks events of the mouse
+        if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
+        {
+            float mouseX = event.mouseButton.x;
+            float mouseY = event.mouseButton.y;
+        }
+
+    }
 }

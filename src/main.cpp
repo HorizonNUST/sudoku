@@ -475,6 +475,13 @@ int main()
                     state = Playing;
                     won = false;
                 }
+                // Generating medium puzzle if the medium button is pressed
+                else if (mouseX >= 175 && mouseX <= 425 && mouseY >= 380 && mouseY <= 450)
+                {
+                    game.makePuzzle(Medium);
+                    state = Playing;
+                    won = false;
+                }
             }
         }
     }

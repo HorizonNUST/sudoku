@@ -129,10 +129,7 @@ void SudokuUI::displayScore() {
 void SudokuUI::displayWelcome() {
     clearScreen();
     cout << "\n";
-    cout << "***********************************************\n";
-    cout << "*                                             *\n";
-    cout << "*       WELCOME TO 16x16 SUDOKU GAME!        *\n";
-    cout << "*                                             *\n";
+    cout << "*       WELCOME TO 16x16 SUDOKU GAME!        *\n\n";
     cout << "*   Rules:                                    *\n";
     cout << "*   - Fill grid with 0-9 and A-F             *\n";
     cout << "*   - Each row must contain all 16 values    *\n";

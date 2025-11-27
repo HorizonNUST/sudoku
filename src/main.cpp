@@ -27,7 +27,7 @@ class Sudoku
 private:
     int grid[9][9];
     int sol[9][9];
-    int fixed[9][9];
+    bool fixed[9][9];
     int selRow;
     int selCol;
     int score;
@@ -201,7 +201,7 @@ public:
             for (int j = 0; j < 9; j++)
             {
                 grid[i][j] = sol[i][j]; // Initializes the grid by sol[][] elements
-                fixed[i][j] = true; // Fixes the values
+                fixed[i][j] = true;     // Fixes the values
             }
         }
 
@@ -217,7 +217,8 @@ public:
         }
 
         // Shuffling the list of cells
-        std::shuffle(cells.begin(), cells.end(), std::mt19937(std::random_device()()));
+        static std::mt19937 rng(std::random_device{}());
+        std::shuffle(cells.begin(), cells.end(), rng);
         // For loop to remove the entries and initialize it back to 0.
         for (int i = 0; i < difficulty; i++)
         {
@@ -360,14 +361,13 @@ void menu(sf::RenderWindow &window, sf::Font &font)
     window.clear(sf::Color(250, 250, 250));
 
     // Title
-    sf::Text title;
-    title.setFont(font);
+    sf::Text title(font);
     title.setString("Sudoku");
     title.setCharacterSize(80);
     title.setFillColor(sf::Color(80, 120, 200));
     title.setStyle(sf::Text::Bold);
     sf::FloatRect titleBounds = title.getLocalBounds();
-    title.setPosition(300 - titleBounds.width / 2, 100);
+    title.setPosition({300 - titleBounds.size.x / 2, 100});
     window.draw(title);
 
     // Subtitle
@@ -442,9 +442,9 @@ int main()
         }
     }
 
-    Sudoku game; // Declaring variable of name game of class Sudoku
-    State state = Menu; // Initializing the state of the game to menu
-    const float cellSize = 60.0f; // Sets the size of each sudoku cell to 60 pixels wide and tall
+    Sudoku game;                     // Declaring variable of name game of class Sudoku
+    State state = Menu;              // Initializing the state of the game to menu
+    const float cellSize = 60.0f;    // Sets the size of each sudoku cell to 60 pixels wide and tall
     const float gridOffsetX = 30.0f; // Starts the grid 30 pixels from left side
     const float gridOffsetY = 30.0f; // Starts the grid 30 pixels from top
     // Setting won variable to false initially
@@ -454,7 +454,7 @@ int main()
     // Main game loop
     while (window.isOpen())
     {
-        sf::Event event; // Handles event 
+        sf::Event event; // Handles event
         while (window.pollEvent(event))
         {
             if (event.type == sf::Event::Closed) // Checks if the event is closed and then closes the window

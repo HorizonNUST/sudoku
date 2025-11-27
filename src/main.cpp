@@ -47,7 +47,7 @@ public:
         }
     }
 
-    // Add functions for checking the valid move
+    // Add functions for checking if the number placed is in agreement with sudoku rules
     // This will be used for sudoku solver
     bool valid(int a[9][9], int row, int col, int num)
     {
@@ -69,12 +69,12 @@ public:
             }
         }
 
-        // loop to check for the same number inside a box of the sudoku
+        // loop to check for the same number inside the 3x3 box of the sudoku
         int startingRow = row - row % 3;
         int startingCol = col - col % 3;
-        for (int i = 0; i < 9; i++)
+        for (int i = 0; i < 3; i++)
         {
-            for (int j = 0; j < 9; j++)
+            for (int j = 0; j < 3; j++)
             {
                 if (a[i + startingRow][j + startingCol] == num)
                 {

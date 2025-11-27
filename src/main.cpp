@@ -4,6 +4,7 @@
 #include <random>
 #include <ctime>
 #include <sstream>
+#include <optional>
 
 // Making an enum for the game state
 enum State

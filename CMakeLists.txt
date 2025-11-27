@@ -5,6 +5,8 @@ project(project-name LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+find_package(SFML COMPONENTS Network Graphics Window Audio System CONFIG REQUIRED)
+
 # get all files in src directory
 file(GLOB_RECURSE FILES_FOLDERS
     LIST_DIRECTORIES true
@@ -57,7 +59,13 @@ target_include_directories(
 # files in external/included are also included to allow downloading libraries and using them
 
 # CHANGE: link installed libraries here
+#target_link_libraries(
+#    main PRIVATE
+#)
+
+# CHANGE: link installed libraries here
 target_link_libraries(
     main PRIVATE
+    SFML::Network SFML::Graphics SFML::Window SFML::Audio SFML::System
 )
 # END CHANGE

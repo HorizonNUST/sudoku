@@ -1,19 +1,17 @@
 {
     "configurations": [
         {
-            "name": "Mac",
+            "name": "Win64",
             "includePath": [
-                "${workspaceFolder}/src/**"
+                "${workspaceFolder}/src/**",
+                "${workspaceFolder}/external/vcpkg/installed/x64-windows/include"
             ],
             "defines": [],
-            "macFrameworkPath": [
-                "/System/Library/Frameworks",
-                "/Library/Frameworks"
-            ],
-            "compilerPath": "/usr/bin/clang++",
+            "compilerPath": "g++",
             "cStandard": "c23",
             "cppStandard": "c++23",
-            "intelliSenseMode": "macos-clang-arm64"
+            "intelliSenseMode": "windows-gcc-x64",
+            "configurationProvider": "ms-vscode.cmake-tools"
         }
     ],
     "version": 4

@@ -1,4 +1,10 @@
 {
     "cmake.configureOnOpen": true,
     "cmake.useCMakePresets": "always",
+    "C_Cpp.default.compilerPath": "C:/MinGW/bin/g++.exe",
+    "files.associations": {
+        "ctime": "cpp",
+        "algorithm": "cpp",
+        "vector": "cpp"
+    },
 }

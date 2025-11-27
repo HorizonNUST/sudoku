@@ -439,9 +439,9 @@ int main()
         }
     }
 
-    Sudoku game;                     // Declaring variable of name game of class Sudoku
-    State state = Menu;              // Initializing the state of the game to menu
-    const float cellSize = 60.0f;    // Sets the size of each sudoku cell to 60 pixels wide and tall
+    Sudoku game; // Declaring variable of name game of class Sudoku
+    State state = Menu; // Initializing the state of the game to menu
+    const float cellSize = 60.0f; // Sets the size of each sudoku cell to 60 pixels wide and tall
     const float gridOffsetX = 30.0f; // Starts the grid 30 pixels from left side
     const float gridOffsetY = 30.0f; // Starts the grid 30 pixels from top
     // Setting won variable to false initially
@@ -471,21 +471,21 @@ int main()
                         // Generating easy puzzle if the easy button is pressed
                         if (mouseX >= 175 && mouseX <= 425 && mouseY >= 280 && mouseY <= 350)
                         {
-                            game.makePuzzle(Easy);
-                            state = Playing;
+                            game.makePuzzle(Easy); // Generates an easy puzzle
+                            state = Playing; 
                             won = false;
                         }
                         // Generating medium puzzle if the medium button is pressed
                         else if (mouseX >= 175 && mouseX <= 425 && mouseY >= 380 && mouseY <= 450)
                         {
-                            game.makePuzzle(Medium);
+                            game.makePuzzle(Medium); // Generates a medium puzzle
                             state = Playing;
                             won = false;
                         }
                         // Generating hard puzzle if the hard button is pressed
                         else if (mouseX >= 175 && mouseX <= 425 && mouseY >= 480 && mouseY <= 550)
                         {
-                            game.makePuzzle(Hard);
+                            game.makePuzzle(Hard); // Generates a hard puzzle
                             state = Playing;
                             won = false;
                         }
@@ -494,12 +494,36 @@ int main()
                     else if (state == Playing)
                     {
                         // Handles the cell selection in the sudoku board
-                        if (mouseX >= gridOffsetX && mouseX < gridOffsetX + 9 * cellSize &&
-                            mouseY >= gridOffsetY && mouseY < gridOffsetY + 9 * cellSize)
+                        if (mouseX >= gridOffsetX && mouseX < gridOffsetX + 9 * cellSize && mouseY >= gridOffsetY && mouseY < gridOffsetY + 9 * cellSize)
                         {
                             int col = (mouseX - gridOffsetX) / cellSize;
                             int row = (mouseY - gridOffsetY) / cellSize;
                             game.selectCell(row, col);
+                        }
+
+                        // Handles the back to menu button
+                        if (mouseX >= 30 && mouseX <= 155 && mouseY >= 620 && mouseY <= 670)
+                            state = Menu;
+                        
+                        // New game button
+                        if (mouseX >= 165 && mouseX <= 290 && mouseY >= 620 && mouseY <= 670)
+                            state = Menu;
+
+                        // Hint button
+                         if (mouseX >= 300 && mouseX <= 425 && mouseY >= 620 && mouseY <= 670)
+                        {
+                            game.hint();
+                            if (game.win()) // Checks if using the hint leads to game win
+                            {
+                                won = true;
+                            }
+                        }
+
+                        // Auto solve button
+                        if (mouseX >= 435 && mouseX <= 570 && mouseY >= 620 && mouseY <= 670)
+                        {
+                            game.autoSolve(); // Call solves the board and displays all the numbers on the board
+                            won = true; // Sets won to true because the board is completley filled
                         }
                     }
                 }

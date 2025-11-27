@@ -371,72 +371,69 @@ void menu(sf::RenderWindow &window, sf::Font &font)
     window.draw(title);
 
     // Subtitle
-    sf::Text subtitle;
-    subtitle.setFont(font);
+    sf::Text subtitle(font);
     subtitle.setString("Select Difficulty");
     subtitle.setCharacterSize(40);
     subtitle.setFillColor(sf::Color(0, 0, 0));
     sf::FloatRect subtitleBounds = subtitle.getLocalBounds();
-    subtitle.setPosition(300 - subtitleBounds.width / 2, 200);
+    subtitle.setPosition({300 - subtitleBounds.size.x / 2, 200});
     window.draw(subtitle);
 
     // Easy button
-    sf::RectangleShape easyBtn(sf::Vector2f(250, 70));
-    easyBtn.setPosition(175, 280);
+    sf::RectangleShape easyBtn({250, 70});
+    easyBtn.setPosition({175, 280});
     easyBtn.setFillColor(sf::Color(76, 175, 80));
     window.draw(easyBtn);
 
-    sf::Text easyText;
-    easyText.setFont(font);
+    sf::Text easyText(font);
     easyText.setString("Easy");
     easyText.setCharacterSize(32);
     easyText.setFillColor(sf::Color::White);
     easyText.setStyle(sf::Text::Bold);
     sf::FloatRect easyBounds = easyText.getLocalBounds();
-    easyText.setPosition(300 - easyBounds.width / 2, 295);
+    easyText.setPosition({300 - easyBounds.size.x / 2, 295});
     window.draw(easyText);
 
     // Medium button
-    sf::RectangleShape mediumBtn(sf::Vector2f(250, 70));
-    mediumBtn.setPosition(175, 380);
+    sf::RectangleShape mediumBtn({250, 70});
+    mediumBtn.setPosition({175, 380});
     mediumBtn.setFillColor(sf::Color(255, 152, 0));
     window.draw(mediumBtn);
 
-    sf::Text mediumText;
-    mediumText.setFont(font);
+    sf::Text mediumText(font);
     mediumText.setString("Medium");
     mediumText.setCharacterSize(32);
     mediumText.setFillColor(sf::Color::White);
     mediumText.setStyle(sf::Text::Bold);
     sf::FloatRect mediumBounds = mediumText.getLocalBounds();
-    mediumText.setPosition(300 - mediumBounds.width / 2, 395);
+    mediumText.setPosition({300 - mediumBounds.size.x / 2, 395});
     window.draw(mediumText);
 
     // Hard button
-    sf::RectangleShape hardBtn(sf::Vector2f(250, 70));
-    hardBtn.setPosition(175, 480);
+    sf::RectangleShape hardBtn({250, 70});
+    hardBtn.setPosition({175, 480});
     hardBtn.setFillColor(sf::Color(244, 67, 54));
     window.draw(hardBtn);
 
-    sf::Text hardText;
-    hardText.setFont(font);
+    sf::Text hardText(font);
     hardText.setString("Hard");
     hardText.setCharacterSize(32);
     hardText.setFillColor(sf::Color::White);
     hardText.setStyle(sf::Text::Bold);
     sf::FloatRect hardBounds = hardText.getLocalBounds();
-    hardText.setPosition(300 - hardBounds.width / 2, 495);
+    hardText.setPosition({300 - hardBounds.size.x / 2, 495});
     window.draw(hardText);
 }
+
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(600, 700), "Sudoku Game");
+    sf::RenderWindow window(sf::VideoMode({600, 700}), "Sudoku Game");
     window.setFramerateLimit(60);
 
     sf::Font font;
-    if (!font.loadFromFile("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"))
+    if (!font.openFromFile("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"))
     {
-        if (!font.loadFromFile("C:\\Windows\\Fonts\\arial.ttf"))
+        if (!font.openFromFile("C:\\Windows\\Fonts\\arial.ttf"))
         {
             return -1;
         }
@@ -449,61 +446,65 @@ int main()
     const float gridOffsetY = 30.0f; // Starts the grid 30 pixels from top
     // Setting won variable to false initially
     bool won = false;
-    return 0;
 
     // Main game loop
     while (window.isOpen())
     {
-        sf::Event event; // Handles event
-        while (window.pollEvent(event))
+        while (const auto event = window.pollEvent())
         {
-            if (event.type == sf::Event::Closed) // Checks if the event is closed and then closes the window
+            if (event->is<sf::Event::Closed>()) // Checks if the event is closed and then closes the window
             {
                 window.close();
             }
-        }
-        // Checks events of the mouse
-        if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
-        {
-            float mouseX = event.mouseButton.x;
-            float mouseY = event.mouseButton.y;
 
-            // Now we check for which button the user has clicked and then displaying the puzzle according to that
-            if (state == Menu)
+            // Checks events of the mouse
+            if (const auto *mouseButtonPressed = event->getIf<sf::Event::MouseButtonPressed>())
             {
-                // Generating easy puzzle if the easy button is pressed
-                if (mouseX >= 175 && mouseX <= 425 && mouseY >= 280 && mouseY <= 350)
+                if (mouseButtonPressed->button == sf::Mouse::Button::Left)
                 {
-                    game.makePuzzle(Easy);
-                    state = Playing;
-                    won = false;
-                }
-                // Generating medium puzzle if the medium button is pressed
-                else if (mouseX >= 175 && mouseX <= 425 && mouseY >= 380 && mouseY <= 450)
-                {
-                    game.makePuzzle(Medium);
-                    state = Playing;
-                    won = false;
-                }
-                // Generating hard puzzle if the hard button is pressed
-                else if (mouseX >= 175 && mouseX <= 425 && mouseY >= 480 && mouseY <= 550)
-                {
-                    game.makePuzzle(Hard);
-                    state = Playing;
-                    won = false;
-                }
-            }
-            // Now to apply conditions for if the state is playing
-            else if (state == Playing)
-            {
-                // Handles the cell selection in the sudoku board
-                if (mouseX >= gridOffsetX && mouseX < gridOffsetX + 9 * cellSize && mouseY >= gridOffsetY && mouseY < gridOffsetY + 9 * cellSize)
-                {
-                    int col = (mouseX - gridOffsetX) / cellSize;
-                    int row = (mouseY - gridOffsetY) / cellSize;
-                    game.selectCell(row, col);
+                    float mouseX = mouseButtonPressed->position.x;
+                    float mouseY = mouseButtonPressed->position.y;
+
+                    // Now we check for which button the user has clicked and then displaying the puzzle according to that
+                    if (state == Menu)
+                    {
+                        // Generating easy puzzle if the easy button is pressed
+                        if (mouseX >= 175 && mouseX <= 425 && mouseY >= 280 && mouseY <= 350)
+                        {
+                            game.makePuzzle(Easy);
+                            state = Playing;
+                            won = false;
+                        }
+                        // Generating medium puzzle if the medium button is pressed
+                        else if (mouseX >= 175 && mouseX <= 425 && mouseY >= 380 && mouseY <= 450)
+                        {
+                            game.makePuzzle(Medium);
+                            state = Playing;
+                            won = false;
+                        }
+                        // Generating hard puzzle if the hard button is pressed
+                        else if (mouseX >= 175 && mouseX <= 425 && mouseY >= 480 && mouseY <= 550)
+                        {
+                            game.makePuzzle(Hard);
+                            state = Playing;
+                            won = false;
+                        }
+                    }
+                    // Now to apply conditions for if the state is playing
+                    else if (state == Playing)
+                    {
+                        // Handles the cell selection in the sudoku board
+                        if (mouseX >= gridOffsetX && mouseX < gridOffsetX + 9 * cellSize &&
+                            mouseY >= gridOffsetY && mouseY < gridOffsetY + 9 * cellSize)
+                        {
+                            int col = (mouseX - gridOffsetX) / cellSize;
+                            int row = (mouseY - gridOffsetY) / cellSize;
+                            game.selectCell(row, col);
+                        }
+                    }
                 }
             }
         }
     }
+    return 0;
 }

@@ -54,7 +54,7 @@ if errorlevel 1 (
 echo %PURPLE%Executable Started...%RESET%
 
 set "starttime=%time%"
-build\main.exe
+build\%BUILD_TYPE%\main.exe
 set "endtime=%time%"
 
 :: Calculate elapsed time

@@ -58,7 +58,16 @@ cmake --build build --config Release
 
 start=$(date +%s.%N)
 echo -e "${PURPLE}Executable Started ... ${RESET}"
-build/main
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    build/main
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+    build/main
+elif [[ "$OSTYPE" == "msys"* || "$OSTYPE" == "cygwin"* || "$OSTYPE" == "win"* ]]; then
+    build/$build_type/main
+else
+    echo -e "${RED}Unsupported OS type: $OSTYPE${RESET}"
+    exit 1
+fi
 end=$(date +%s.%N)
 
 elapsed=$(awk -v e="$end" -v s="$start" 'BEGIN { printf "%.9f", e - s }')

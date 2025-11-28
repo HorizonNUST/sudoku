@@ -638,7 +638,7 @@ int main()
                 }
             }
 
-            // Drawing Menu button
+            // Drawing the menu button
             sf::RectangleShape menuBtn(sf::Vector2f(125, 50));
             menuBtn.setPosition(sf::Vector2f(30, 620));
             menuBtn.setFillColor(sf::Color(160, 160, 160));
@@ -650,8 +650,23 @@ int main()
             menuText.setCharacterSize(22);
             menuText.setFillColor(sf::Color::Black);
             sf::FloatRect menuBounds = menuText.getLocalBounds();
-            menuText.setPosition(sf::Vector2f(92.5 - menuBounds.size.x / 2, 635));
+            menuText.setPosition(sf::Vector2f(92.5 - menuBounds.size.x / 2, 632));
             window.draw(menuText);
+
+            // Draw the new game button
+            sf::RectangleShape button(sf::Vector2f(125, 50));
+            button.setPosition(sf::Vector2f(165, 620));
+            button.setFillColor(sf::Color(70, 130, 180));
+            button.setOutlineThickness(2);
+            button.setOutlineColor(sf::Color::Black);
+            window.draw(button);
+            sf::Text buttonText(font);
+            buttonText.setString("New Game");
+            buttonText.setCharacterSize(20);
+            buttonText.setFillColor(sf::Color::White);
+            sf::FloatRect btnBounds = buttonText.getLocalBounds();
+            buttonText.setPosition(sf::Vector2f(227.5 - btnBounds.size.x / 2, 633));
+            window.draw(buttonText);
         }
         window.display();
     }

@@ -25,10 +25,15 @@ private:
     void goToHighScores();
     void goToCredits();
 
+    bool m_was_key_pressed_last_frame[static_cast<size_t>(sf::Keyboard::KeyCount)] = {false};
+    bool isKeyJustPressed(sf::Keyboard::Key key);
+
     uint16_t m_credits_sample_text_id{};
 
 public:
     MainLayoutGroup() = delete;
     MainLayoutGroup(GameScreen &screen);
     ~MainLayoutGroup();
+
+    void Update(const GameScreenData &data);
 };

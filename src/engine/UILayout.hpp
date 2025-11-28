@@ -40,7 +40,12 @@ namespace engine
 
         engine::gui::elements::UIElement *GetElementById(uint16_t id);
 
-        bool operator==(const UILayout &other) const
+        inline bool CompareID(uint16_t id) const
+        {
+            return m_id == id;
+        }
+        
+        inline bool operator==(const UILayout &other) const
         {
             return m_id == other.m_id;
         }

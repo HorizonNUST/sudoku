@@ -8,6 +8,9 @@ int main()
 {
     GameScreen screen;
     MainLayoutGroup mainLayoutGroup{screen};
+    screen.AddUpdateCallback([&mainLayoutGroup](const GameScreenData &data) {
+        mainLayoutGroup.Update(data);
+    });
 
     screen.StartLoop();
 

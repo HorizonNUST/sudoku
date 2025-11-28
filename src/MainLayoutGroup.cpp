@@ -24,6 +24,15 @@ MainLayoutGroup::~MainLayoutGroup()
     delete m_credits_layout;
 }
 
+void MainLayoutGroup::Update(const GameScreenData &data)
+{
+    if (isKeyJustPressed(sf::Keyboard::Key::Escape))
+    {
+        DEBUG_PRINT("Escape Pressed -> Main Menu");
+        goToMainMenu();
+    }
+}
+
 void MainLayoutGroup::createMainMenuLayout()
 {
     constexpr sf::Vector2f startPos = {50.f, 150.f};
@@ -148,4 +157,15 @@ void MainLayoutGroup::goToHighScores()
 void MainLayoutGroup::goToCredits()
 {
     m_screen.ChangeUILayout(*m_credits_layout);
+}
+
+bool MainLayoutGroup::isKeyJustPressed(sf::Keyboard::Key key)
+{
+    bool isPressedNow = sf::Keyboard::isKeyPressed(key);
+    bool wasPressedLastFrame = m_was_key_pressed_last_frame[static_cast<size_t>(key)];
+
+    // update for next frame
+    m_was_key_pressed_last_frame[static_cast<size_t>(key)] = isPressedNow;
+
+    return isPressedNow && !wasPressedLastFrame;
 }

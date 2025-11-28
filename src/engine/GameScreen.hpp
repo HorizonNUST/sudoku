@@ -21,6 +21,7 @@ namespace engine
         sf::RenderWindow m_window;
         UILayout *m_ui_layout = nullptr;
         GameScreenData m_data;
+        std::vector<std::function<void(const GameScreenData &)>> m_update_callbacks;
 
         static sf::SoundBuffer soundBuffer; // for short sound
 
@@ -45,5 +46,12 @@ namespace engine
         /// @brief To play an audio file one time from a file path
         /// @param path Path to the audio file
         static void PlayAudioOneTime(const std::string &path);
+
+        /// @brief To add update callback which will be called every frame
+        /// @param callback Function to be called every frame with `GameScreenData`
+        inline void AddUpdateCallback(std::function<void(const GameScreenData &)> callback)
+        {
+            m_update_callbacks.push_back(callback);
+        }
     };
 }

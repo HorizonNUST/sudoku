@@ -46,6 +46,12 @@ void engine::GameScreen::StartLoop()
 
         m_window.clear();
 
+        for (const auto &callback : m_update_callbacks)
+        {
+            if (callback)
+                callback(m_data);
+        }
+
         if (m_ui_layout)
         {
             m_ui_layout->update(m_data);

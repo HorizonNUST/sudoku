@@ -1,7 +1,7 @@
 @echo off
 setlocal enabledelayedexpansion
 
-:: Colors
+:: colors
 set "GREEN="
 set "RED="
 set "YELLOW="
@@ -20,48 +20,32 @@ set "CYAN=%ESC%[0;36m"
 set "PURPLE=%ESC%[0;35m"
 set "RESET=%ESC%[0m"
 
-echo %CYAN%Updating vcpkg submodule...%RESET%
+:: update submodules
+echo %CYAN%Updating git submodules ... %RESET%
 git submodule update --init --recursive
-if errorlevel 1 (
-    echo %RED%Failed to update git submodules.%RESET%
-    exit /b 1
-)
 
-echo %CYAN%Detecting platform...%RESET%
-set "PLATFORM=windows"
-echo %GREEN%Detected platform: %PURPLE%!PLATFORM!%RESET%
+echo %CYAN%Assuming Platform is Windows ... %RESET%
 
-:: Bootstrap vcpkg if needed
+:: bootstrap it to generate ./external/vcpkg/vcpkg.exe
+:: if vcpkg.exe doesn't exist
 if not exist "external\vcpkg\vcpkg.exe" (
-    echo %YELLOW%Bootstrapping vcpkg...%RESET%
+    echo %YELLOW%Bootstrapping vcpkg ... %RESET%
     call external\vcpkg\bootstrap-vcpkg.bat
-    if errorlevel 1 (
-        echo %RED%Bootstrap failed.%RESET%
-        exit /b 1
-    )
 ) else (
     echo %GREEN%vcpkg already bootstrapped.%RESET%
 )
 
-:: Install packages
-echo %CYAN%Installing sfml package via vcpkg...%RESET%
+:: install packages
+echo %CYAN%Installing packages ... %RESET%
 external\vcpkg\vcpkg.exe install sfml
-if errorlevel 1 (
-    echo %RED%Failed to install sfml via vcpkg.%RESET%
-    exit /b 1
-)
-
+:: CHANGE: ADD YOUR PACKAGES HERE; vcpkg-install <package_name>
 echo %CYAN%To install packages run:%RESET%
-echo %PURPLE%external\vcpkg\vcpkg.exe install ^<package_name^%%RESET%
+echo %PURPLE%external\vcpkg\vcpkg.exe install ^<package_name^>%RESET%
 
-:: Setup cmake preset
-echo %CYAN%Setting up CMake preset...%RESET%
-cmake --preset=default
-if errorlevel 1 (
-    echo %YELLOW%Warning: Could not configure CMake preset automatically.%RESET%
-)
+:: setup cmake preset; REMOVE after setting up preset
+cmake --preset default-configure
 
-echo %PURPLE%In VS Code, open Command Palette and select 'CMake: Select Build Preset' → 'Default with vcpkg'%RESET%
+echo %PURPLE%In VS Code, open Command Palette and select 'CMake: Select Build Preset' → 'Default'%RESET%
 echo %PURPLE%After successful setup, syntax highlighting and other features will activate.%RESET%
 
 echo %CYAN%Run run.bat to build and run the program.%RESET%

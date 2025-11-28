@@ -528,6 +528,28 @@ int main()
                     }
                 }
             }
+
+            // Now to handle events where mouse button is clicked and the state is set to playing
+            if (const auto *keyPressed = event->getIf<sf::Event::KeyPressed>())
+            {
+                if (state == Playing && !won)
+                {
+                    if (keyPressed->code >= sf::Keyboard::Key::Num1 && keyPressed->code <= sf::Keyboard::Key::Num9)
+                    {
+                        int num = static_cast<int>(keyPressed->code) - static_cast<int>(sf::Keyboard::Key::Num0);
+                        game.inputNumber(num);
+                        // After each input of the number we call the win function to check if the board is correctly filled
+                        if (game.win())
+                        {
+                            won = true; // If the board is correctly filled set won = true so that user win the game
+                        }
+                    }
+                    else if (keyPressed->code == sf::Keyboard::Key::Backspace || keyPressed->code == sf::Keyboard::Key::Delete)
+                    {
+                        game.inputNumber(0);
+                    }
+                }
+            }
         }
     }
     return 0;

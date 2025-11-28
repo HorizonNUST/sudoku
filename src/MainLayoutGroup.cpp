@@ -31,6 +31,15 @@ void MainLayoutGroup::Update(const GameScreenData &data)
         DEBUG_PRINT("Escape Pressed -> Main Menu");
         goToMainMenu();
     }
+
+    if (isKeyJustPressed(sf::Keyboard::Key::H) && inLayout(*m_credits_layout))
+    {
+        DEBUG_PRINT("Toggle Credits Text");
+
+        // show hide button in credits layout
+        auto *element = m_credits_layout->GetElementById(m_credits_sample_text_id);
+        element->SetHidden(!element->IsHidden());
+    }
 }
 
 void MainLayoutGroup::createMainMenuLayout()
@@ -168,4 +177,9 @@ bool MainLayoutGroup::isKeyJustPressed(sf::Keyboard::Key key)
     m_was_key_pressed_last_frame[static_cast<size_t>(key)] = isPressedNow;
 
     return isPressedNow && !wasPressedLastFrame;
+}
+
+bool MainLayoutGroup::inLayout(const UILayout &layout) const
+{
+    return m_screen.GetCurrentUILayoutID() == layout.GetID();
 }

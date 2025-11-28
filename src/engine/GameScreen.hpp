@@ -29,6 +29,8 @@ namespace engine
         GameScreen();
         ~GameScreen();
 
+        uint16_t GetCurrentUILayoutID() const;
+
         /// @brief To Change `UILayout` to given layout
         /// @param layout `UILayout&` handle memory yourself
         void ChangeUILayout(UILayout &layout);

@@ -28,6 +28,8 @@ private:
     bool m_was_key_pressed_last_frame[static_cast<size_t>(sf::Keyboard::KeyCount)] = {false};
     bool isKeyJustPressed(sf::Keyboard::Key key);
 
+    bool inLayout(const UILayout &layout) const;
+
     uint16_t m_credits_sample_text_id{};
 
 public:

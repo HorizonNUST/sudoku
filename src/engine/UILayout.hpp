@@ -35,6 +35,8 @@ namespace engine
         uint16_t AddImageElement(const std::string &imagePath, const sf::Vector2f &position);
         uint16_t AddButtonElement(const std::string &text, const sf::Vector2f &position, std::function<void()> callback = CONSTANTS::NULLFUNC, const engine::gui::elements::ButtonConfig &config = {});
 
+        uint16_t GetID() const { return m_id; }
+
         void ClearLayout();
         void DisableAllButtons();
 
@@ -44,7 +46,7 @@ namespace engine
         {
             return m_id == id;
         }
-        
+
         inline bool operator==(const UILayout &other) const
         {
             return m_id == other.m_id;

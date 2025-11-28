@@ -13,6 +13,15 @@ engine::GameScreen::GameScreen()
 
 engine::GameScreen::~GameScreen() {}
 
+uint16_t engine::GameScreen::GetCurrentUILayoutID() const
+{
+    if (m_ui_layout)
+        return m_ui_layout->GetID();
+
+    DEBUG_PRINT("No UILayout set");
+    throw std::runtime_error("No UILayout set");
+}
+
 void engine::GameScreen::ChangeUILayout(UILayout &layout)
 {
     if (m_ui_layout)

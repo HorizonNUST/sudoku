@@ -94,7 +94,8 @@ namespace utils
     }
 }
 
-inline std::string file_name(const char* path) {
+// static to limit scope to this file
+static inline std::string file_name(const char* path) {
     return std::filesystem::path(path).filename().string();
 }
 

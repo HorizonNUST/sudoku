@@ -6,29 +6,29 @@ engine::UILayout::UILayout(uint16_t id) : m_id(id)
 
 uint16_t engine::UILayout::AddTextElement(const std::string &text, const sf::Vector2f &position, const engine::gui::elements::TextConfig &config)
 {
-    lastID++;
-    m_elements.emplace_back(std::make_unique<engine::gui::elements::TextElement>(lastID, text, position, config));
-    return lastID;
+    m_last_element_id++;
+    m_elements.emplace_back(std::make_unique<engine::gui::elements::TextElement>(m_last_element_id, text, position, config));
+    return m_last_element_id;
 }
 
 uint16_t engine::UILayout::AddImageElement(const std::string &imagePath, const sf::Vector2f &position)
 {
-    lastID++;
-    m_elements.emplace_back(std::make_unique<engine::gui::elements::ImageElement>(lastID, imagePath, position));
-    return lastID;
+    m_last_element_id++;
+    m_elements.emplace_back(std::make_unique<engine::gui::elements::ImageElement>(m_last_element_id, imagePath, position));
+    return m_last_element_id;
 }
 
 uint16_t engine::UILayout::AddButtonElement(const std::string &text, const sf::Vector2f &position, std::function<void()> callback, const engine::gui::elements::ButtonConfig& config)
 {
-    lastID++;
-    m_elements.emplace_back(std::make_unique<engine::gui::elements::ButtonElement>(lastID, text, position, std::move(callback), config));
-    return lastID;
+    m_last_element_id++;
+    m_elements.emplace_back(std::make_unique<engine::gui::elements::ButtonElement>(m_last_element_id, text, position, std::move(callback), config));
+    return m_last_element_id;
 }
 
 void engine::UILayout::ClearLayout()
 {
     m_elements.clear();
-    lastID = 0;
+    m_last_element_id = 0;
 }
 
 void engine::UILayout::DisableAllButtons()

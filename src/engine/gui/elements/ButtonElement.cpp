@@ -46,7 +46,7 @@ inline void engine::gui::elements::ButtonElement::SetText(const std::string &new
 
 void engine::gui::elements::ButtonElement::Update(const GameScreenData &data)
 {
-    if (m_isDisabled)
+    if (m_is_disabled)
         return;
 
     // aliases

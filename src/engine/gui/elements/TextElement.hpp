@@ -4,19 +4,10 @@
 #include "utils.hpp"
 #include "constants.hpp"
 
+#include "ElementConfigs.hpp"
+
 namespace engine::gui::elements
 {
-    /// @brief Used to set the style for the button
-    struct TextConfig
-    {
-        sf::Color fontColor = sf::Color::White;
-        unsigned int fontSize = 16;
-        /// @brief input `sf::Text::Style::`
-        sf::Text::Style fontStyle = sf::Text::Style::Regular;
-
-        /// @brief Line height multiplier (1.0 = normal, 1.5 = 1.5x spacing, etc.)
-        float lineHeight = 2.f;
-    };
     class TextElement : public UIElement
     {
     public:

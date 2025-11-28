@@ -14,12 +14,6 @@ namespace engine
 {
     class UILayout;
 
-    struct GameState
-    {
-        bool gameRunning = true;
-        size_t inspectionsCount = 0;
-    };
-
     /// @brief Main Screen
     class GameScreen
     {
@@ -27,9 +21,7 @@ namespace engine
         sf::RenderWindow m_window;
         UILayout *m_ui_layout = nullptr;
         GameScreenData m_data;
-        GameState m_game_state;
 
-        // music/sound
         static sf::SoundBuffer soundBuffer; // for short sound
 
     public:
@@ -43,9 +35,15 @@ namespace engine
         /// @brief To Start the Game Loop
         void StartLoop();
 
+        /// @brief To Close the Window
         inline void CloseWindow() { m_window.close(); }
 
-        static void setBackgroundMusic(const std::string &path);
-        static void playAudioOneTime(std::string path);
+        /// @brief To set background music from a file path
+        /// @param path Path to the music file
+        static void SetBackgroundMusic(const std::string &path);
+
+        /// @brief To play an audio file one time from a file path
+        /// @param path Path to the audio file
+        static void PlayAudioOneTime(const std::string &path);
     };
 }

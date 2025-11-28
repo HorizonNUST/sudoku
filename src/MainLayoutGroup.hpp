@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Screen.hpp"
+#include "GameScreen.hpp"
 #include "UILayout.hpp"
 
 using namespace engine;
@@ -10,22 +10,22 @@ class MainLayoutGroup
 private:
     GameScreen &m_screen;
 
-    UILayout *m_mainMenuLayout = nullptr;
-    UILayout *m_howToPlayLayout = nullptr;
-    UILayout *m_highScoresLayout = nullptr;
-    UILayout *m_creditsLayout = nullptr;
+    UILayout *m_main_menu_layout = nullptr;
+    UILayout *m_how_to_play_layout = nullptr;
+    UILayout *m_high_scores_layout = nullptr;
+    UILayout *m_credits_layout = nullptr;
 
-    void m_createMainMenuLayout();
-    void m_createHowToPlayLayout();
-    void m_createHighScoresLayout();
-    void m_createCreditsLayout();
+    void createMainMenuLayout();
+    void createHowToPlayLayout();
+    void createHighScoresLayout();
+    void createCreditsLayout();
 
-    void m_goToMainMenu();
-    void m_goToHowToPlay();
-    void m_goToHighScores();
-    void m_goToCredits();
+    void goToMainMenu();
+    void goToHowToPlay();
+    void goToHighScores();
+    void goToCredits();
 
-    uint16_t m_creditsSampleTextID{};
+    uint16_t m_credits_sample_text_id{};
 
 public:
     MainLayoutGroup() = delete;

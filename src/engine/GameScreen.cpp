@@ -1,4 +1,4 @@
-#include "Screen.hpp"
+#include "GameScreen.hpp"
 
 #include "GameScreenData.hpp"
 #include "utils.hpp"
@@ -11,9 +11,7 @@ engine::GameScreen::GameScreen()
     m_window = sf::RenderWindow(sf::VideoMode({800u, 600u}), "Sudoku", sf::Style::Titlebar | sf::Style::Close);
 }
 
-engine::GameScreen::~GameScreen()
-{
-}
+engine::GameScreen::~GameScreen() {}
 
 void engine::GameScreen::ChangeUILayout(UILayout &layout)
 {
@@ -57,7 +55,8 @@ void engine::GameScreen::StartLoop()
         m_window.display();
     }
 }
-void engine::GameScreen::setBackgroundMusic(const std::string &path)
+
+void engine::GameScreen::SetBackgroundMusic(const std::string &path)
 {
     static sf::Music backgroundMusic; // for long background track
     // Load the sound buffer from file
@@ -70,7 +69,8 @@ void engine::GameScreen::setBackgroundMusic(const std::string &path)
     backgroundMusic.play();
     DEBUG_PRINT("Background music started: " + path);
 }
-void engine::GameScreen::playAudioOneTime(std::string path)
+
+void engine::GameScreen::PlayAudioOneTime(const std::string &path)
 {
     static sf::Sound sound(soundBuffer);
     // Load the sound buffer from file

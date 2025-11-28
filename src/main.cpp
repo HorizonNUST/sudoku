@@ -585,7 +585,60 @@ int main()
                     window.draw(cell);
                 }
             }
+
+            // Drawing grid lines
+            for (int i = 0; i <= 9; i++)
+            {
+                sf::RectangleShape line;
+                float thickness = (i % 3 == 0) ? 3.0f : 1.0f;
+                // Horizontal lines
+                line.setSize(sf::Vector2f(9 * cellSize, thickness));
+                line.setPosition(sf::Vector2f(gridOffsetX, gridOffsetY + i * cellSize));
+                line.setFillColor(sf::Color(50, 50, 50));
+                window.draw(line);
+                // Vertical lines
+                line.setSize(sf::Vector2f(thickness, 9 * cellSize));
+                line.setPosition(sf::Vector2f(gridOffsetX + i * cellSize, gridOffsetY));
+                window.draw(line);
+            }
+            // Draw numbers and add color to them
+            for (int row = 0; row < 9; row++)
+            {
+                for (int col = 0; col < 9; col++)
+                {
+                    int num = game.getCell(row, col);
+                    if (num != 0)
+                    {
+                        sf::Text text(font);
+                        text.setString(std::to_string(num));
+                        text.setCharacterSize(30);
+                        if (game.isFixed(row, col))
+                        {
+                            text.setFillColor(sf::Color::Black);
+                            text.setStyle(sf::Text::Bold);
+                        }
+                        else
+                        {
+                            // Check if the number is valid or not
+                            if (game.validMove(row, col, num))
+                            {
+                                text.setFillColor(sf::Color(0, 100, 200));
+                            }
+                            else
+                            {
+                                text.setFillColor(sf::Color(220, 20, 60)); // Make the number red to show that it is invalid
+                            }
+                        }
+                        sf::FloatRect textBounds = text.getLocalBounds();
+                        text.setPosition(sf::Vector2f(
+                            gridOffsetX + col * cellSize + (cellSize - textBounds.size.x) / 2 - textBounds.position.x,
+                            gridOffsetY + row * cellSize + (cellSize - textBounds.size.y) / 2 - textBounds.position.y - 5));
+                        window.draw(text);
+                    }
+                }
+            }
         }
+        window.display();
     }
     return 0;
 }

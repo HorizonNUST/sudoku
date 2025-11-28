@@ -698,6 +698,34 @@ int main()
             sf::FloatRect solveBounds = solveText.getLocalBounds();
             solveText.setPosition(sf::Vector2f(502.5 - solveBounds.size.x / 2, 634));
             window.draw(solveText);
+
+            // Drawing the score displayer
+            sf::Text scoreText(font);
+            scoreText.setString("Score: " + std::to_string(game.getScore()));
+            scoreText.setCharacterSize(28);
+            scoreText.setFillColor(sf::Color(50, 50, 50));
+            scoreText.setStyle(sf::Text::Bold);
+            sf::FloatRect scoreBounds = scoreText.getLocalBounds();
+            scoreText.setPosition(sf::Vector2f(300 - scoreBounds.size.x / 2, 1));
+            window.draw(scoreText);
+
+            // Drawing the win message
+            if (won)
+            {
+                sf::Text winText(font);
+                winText.setString("You Won!  Score: " + std::to_string(game.getScore()));
+                winText.setCharacterSize(36);
+                winText.setStyle(sf::Text::Bold);
+                winText.setFillColor(sf::Color(50, 180, 70));
+                winText.setOutlineThickness(2);
+                winText.setOutlineColor(sf::Color(30, 30, 30));
+                winText.setLetterSpacing(1.1f);
+                sf::FloatRect winBounds = winText.getLocalBounds();
+                sf::Vector2f centerOrigin = winBounds.position + sf::Vector2f(winBounds.size.x / 2.f, winBounds.size.y / 2.f);
+                winText.setOrigin(centerOrigin);
+                winText.setPosition({300.f, 300.f});
+                window.draw(winText);
+            }
         }
         window.display();
     }

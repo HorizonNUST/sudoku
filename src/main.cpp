@@ -667,6 +667,37 @@ int main()
             sf::FloatRect btnBounds = buttonText.getLocalBounds();
             buttonText.setPosition(sf::Vector2f(227.5 - btnBounds.size.x / 2, 633));
             window.draw(buttonText);
+
+            // Drawing the hint button
+            sf::RectangleShape hintBtn(sf::Vector2f(125, 50));
+            hintBtn.setPosition(sf::Vector2f(300, 620));
+            hintBtn.setFillColor(sf::Color(255, 193, 7));
+            hintBtn.setOutlineThickness(2);
+            hintBtn.setOutlineColor(sf::Color::Black);
+            window.draw(hintBtn);
+            sf::Text hintText(font);
+            hintText.setString("Hint (-10)");
+            hintText.setCharacterSize(20);
+            hintText.setFillColor(sf::Color::White);
+            sf::FloatRect hintBounds = hintText.getLocalBounds();
+            hintText.setPosition(sf::Vector2f(362.5 - hintBounds.size.x / 2, 633));
+            window.draw(hintText);
+
+            // Drawing the auto solve button
+            sf::RectangleShape solveBtn(sf::Vector2f(135, 50));
+            solveBtn.setPosition(sf::Vector2f(435, 620));
+            solveBtn.setFillColor(sf::Color(156, 39, 176));
+            solveBtn.setOutlineThickness(2);
+            solveBtn.setOutlineColor(sf::Color::Black);
+            window.draw(solveBtn);
+            sf::Text solveText(font);
+            solveText.setString("Solve (-20)");
+            solveText.setCharacterSize(19);
+            solveText.setFillColor(sf::Color::White);
+            solveText.setStyle(sf::Text::Bold);
+            sf::FloatRect solveBounds = solveText.getLocalBounds();
+            solveText.setPosition(sf::Vector2f(502.5 - solveBounds.size.x / 2, 635));
+            window.draw(solveText);
         }
         window.display();
     }

@@ -54,7 +54,7 @@ cmake -B build -S . \
     -DCMAKE_BUILD_TYPE=$build_type
 
 echo -e "${YELLOW}Compiling using CMake ... ${RESET}"
-cmake --build build --config Release
+cmake --build build --config $build_type
 
 start=$(date +%s.%N)
 echo -e "${PURPLE}Executable Started ... ${RESET}"

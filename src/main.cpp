@@ -76,7 +76,7 @@ public:
         {
             for (int j = 0; j < 3; j++)
             {
-                if (a[i + startingRow][j + startingCol] == num)
+                if (a[i + startingRow][j + startingCol] == num) // This will move throgh all the cells in the 3x3 grid to check them
                 {
                     return false;
                 }

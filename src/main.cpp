@@ -551,6 +551,41 @@ int main()
                 }
             }
         }
+
+        // Rendering the game based on current state
+        if (state == Menu)
+        {
+            menu(window, font);
+        }
+        else if (state == Playing)
+        {
+            window.clear(sf::Color(250, 250, 250));
+            // Draw grid highlighting
+            for (int row = 0; row < 9; row++)
+            {
+                for (int col = 0; col < 9; col++)
+                {
+                    sf::RectangleShape cell(sf::Vector2f(cellSize - 2, cellSize - 2));
+                    cell.setPosition(sf::Vector2f(gridOffsetX + col * cellSize + 1, gridOffsetY + row * cellSize + 1));
+                    // Highlights selected cell in blue
+                    if (game.isSel(row, col))
+                    {
+                        cell.setFillColor(sf::Color(187, 222, 251));
+                    }
+                    // Highlights selected cell's row and column with lighter blue
+                    else if (game.sameRow(row) || game.sameCol(col) || game.sameBox(row, col))
+                    {
+                        cell.setFillColor(sf::Color(230, 240, 250));
+                    }
+                    // For unselected cells it will have default color white
+                    else
+                    {
+                        cell.setFillColor(sf::Color::White);
+                    }
+                    window.draw(cell);
+                }
+            }
+        }
     }
     return 0;
 }

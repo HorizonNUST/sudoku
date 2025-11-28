@@ -637,6 +637,21 @@ int main()
                     }
                 }
             }
+
+            // Drawing Menu button
+            sf::RectangleShape menuBtn(sf::Vector2f(125, 50));
+            menuBtn.setPosition(sf::Vector2f(30, 620));
+            menuBtn.setFillColor(sf::Color(160, 160, 160));
+            menuBtn.setOutlineThickness(2);
+            menuBtn.setOutlineColor(sf::Color::Black);
+            window.draw(menuBtn);
+            sf::Text menuText(font);
+            menuText.setString("Menu");
+            menuText.setCharacterSize(22);
+            menuText.setFillColor(sf::Color::Black);
+            sf::FloatRect menuBounds = menuText.getLocalBounds();
+            menuText.setPosition(sf::Vector2f(92.5 - menuBounds.size.x / 2, 635));
+            window.draw(menuText);
         }
         window.display();
     }

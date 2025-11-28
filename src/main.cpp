@@ -161,7 +161,7 @@ public:
     // Function to randomly fill the diagonal box of the sudoku board
     void fillDiagonal()
     {
-        for (int i = 0; i < 9; i++)
+        for (int i = 0; i < 9; i +=3)
         {
             std::vector<int> nums = {1, 2, 3, 4, 5, 6, 7, 8, 9};
             static std::mt19937 rng(std::random_device{}());
@@ -696,7 +696,7 @@ int main()
             solveText.setFillColor(sf::Color::White);
             solveText.setStyle(sf::Text::Bold);
             sf::FloatRect solveBounds = solveText.getLocalBounds();
-            solveText.setPosition(sf::Vector2f(502.5 - solveBounds.size.x / 2, 635));
+            solveText.setPosition(sf::Vector2f(502.5 - solveBounds.size.x / 2, 634));
             window.draw(solveText);
         }
         window.display();

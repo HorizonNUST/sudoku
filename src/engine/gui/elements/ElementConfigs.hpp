@@ -57,23 +57,26 @@ namespace engine::gui::elements
         sf::Color outlineColor = sf::Color::White;
     };
 
+    struct ClickableGridElementLineConfig
+    {
+        sf::Color color = sf::Color::White;
+        float thickness = 2.f;
+    };
+
     /// @brief config for one cell in `ClickableGridElement`
     struct ClickableGridElementCellConfig
     {
+        // font
         sf::Color fontColor = sf::Color::White;
-        sf::Color fontDisabledColor = sf::Color(100, 100, 100);
 
         unsigned int fontSize = 16;
         sf::Text::Style fontStyle = sf::Text::Style::Regular;
         sf::Text::Style fontHoverStyle = sf::Text::Style::Underlined;
         sf::Text::Style fontClickStyle = sf::Text::Style::Italic;
-        sf::Text::Style fontDisabledStyle = sf::Text::Style::Italic;
 
-        sf::Color fillColor = sf::Color::Transparent;
-        sf::Color outlineColor = sf::Color::White;
-        float outlineThickness = 2.f;
-
-        sf::Color hoverFillColor = sf::Color(50, 50, 50);
-        sf::Color clickFillColor = sf::Color(100, 100, 100);
+        // cell
+        sf::Color fillCellColor = sf::Color::Transparent;
+        sf::Color hoverCellFillColor = sf::Color(50, 50, 50);
+        sf::Color clickCellFillColor = sf::Color(100, 100, 100);
     };
 }

@@ -40,14 +40,39 @@ namespace engine
         uint16_t AddButtonElement(const std::string &text, const sf::Vector2f &position, std::function<void()> callback = CONSTANTS::NULLFUNC, const engine::gui::elements::ButtonConfig &config = {});
         uint16_t AddRectangleElement(const sf::Vector2f &position, const sf::Vector2f &size, const engine::gui::elements::RectangleConfig &config = {});
         uint16_t AddLineElement(const sf::Vector2f &startPoint, const sf::Vector2f &endPoint, const engine::gui::elements::LineConfig &config = {});
-        uint16_t AddClickableGridElement(const sf::Vector2f &position, const sf::Vector2f &cellSize);
+        uint16_t AddClickableGridElement(const sf::Vector2f &position, const sf::Vector2f &cellSize, size_t sizeX, size_t sizeY);
+
+        engine::gui::elements::UIElement *GetElementById(uint16_t id);
+
+        inline engine::gui::elements::TextElement *GetTextElementById(uint16_t id)
+        {
+            return dynamic_cast<engine::gui::elements::TextElement *>(GetElementById(id));
+        }
+        inline engine::gui::elements::ImageElement *GetImageElementById(uint16_t id)
+        {
+            return dynamic_cast<engine::gui::elements::ImageElement *>(GetElementById(id));
+        }
+        inline engine::gui::elements::ButtonElement *GetButtonElementById(uint16_t id)
+        {
+            return dynamic_cast<engine::gui::elements::ButtonElement *>(GetElementById(id));
+        }
+        inline engine::gui::elements::RectangleElement *GetRectangleElementById(uint16_t id)
+        {
+            return dynamic_cast<engine::gui::elements::RectangleElement *>(GetElementById(id));
+        }
+        inline engine::gui::elements::LineElement *GetLineElementById(uint16_t id)
+        {
+            return dynamic_cast<engine::gui::elements::LineElement *>(GetElementById(id));
+        }
+        inline engine::gui::elements::ClickableGridElement *GetClickableGridElementById(uint16_t id)
+        {
+            return dynamic_cast<engine::gui::elements::ClickableGridElement *>(GetElementById(id));
+        }
 
         uint16_t GetID() const { return m_id; }
 
         void ClearLayout();
         void DisableAllButtons();
-
-        engine::gui::elements::UIElement *GetElementById(uint16_t id);
 
         inline bool CompareID(uint16_t id) const
         {

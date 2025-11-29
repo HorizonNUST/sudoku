@@ -18,24 +18,50 @@ namespace engine::gui::elements
     class ClickableGridElement : public UIElement
     {
     public:
-        ClickableGridElement(uint16_t id, const sf::Vector2f &position, const sf::Vector2f &cellSize);
+        ClickableGridElement(uint16_t id, const sf::Vector2f &position, const sf::Vector2f &cellSize, size_t sizeX, size_t sizeY);
 
         void Update(const GameScreenData &data) override;
 
         void SetCallback(std::function<void(size_t, size_t, std::string &)> callback);
 
-        inline bool IsCellDisabled(size_t x, size_t y) const { return m_cells_disabled[getUnwrappedIndex(x, y)]; }
+        inline bool IsCellDisabled(size_t x, size_t y) const
+        {
+            checkOutOfBounds(x, y);
+            return m_cells_disabled[getUnwrappedIndex(x, y)];
+        }
         void SetCellDisabled(size_t x, size_t y, bool disabled);
 
         // set text for a specific cell
         void SetCellText(size_t x, size_t y, const std::string &text);
 
+        inline ClickableGridElementCellConfig GetCellConfig(size_t x, size_t y) const
+        {
+            checkOutOfBounds(x, y);
+            return m_cells_config[getUnwrappedIndex(x, y)];
+        }
+        void SetCellConfig(size_t x, size_t y, const ClickableGridElementCellConfig &config);
+
+        inline size_t GetNumLines() const { return m_size_x + m_size_y + 2; }
+        inline ClickableGridElementLineConfig GetLineConfig(size_t index) const
+        {
+            if (index >= m_size_x + m_size_y + 2)
+                throw std::runtime_error("Line index out of bounds: " + std::to_string(index));
+
+            return m_lines_config[index];
+        }
+        void SetLineConfig(size_t index, const ClickableGridElementLineConfig &config);
+
+        inline size_t GetSizeX() const { return m_size_x; }
+        inline size_t GetSizeY() const { return m_size_y; }
+
     private:
         size_t m_size_x = 9;
         size_t m_size_y = 9;
 
+        // per-line configs
+        std::vector<ClickableGridElementLineConfig> m_lines_config;
         // per-cell configs
-        std::vector<ClickableGridElementCellConfig> m_cell_configs;
+        std::vector<ClickableGridElementCellConfig> m_cells_config;
 
         sf::Font m_font;
         std::vector<std::optional<sf::Text>> m_cells_text;

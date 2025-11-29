@@ -43,6 +43,7 @@
         "unordered_map": "cpp",
         "variant": "cpp",
         "map": "cpp",
-        "span": "cpp"
+        "span": "cpp",
+        "forward_list": "cpp"
     },
 }

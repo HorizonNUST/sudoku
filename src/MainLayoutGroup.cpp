@@ -98,23 +98,6 @@ void MainLayoutGroup::createHowToPlayLayout()
 
     constexpr sf::Vector2f boardSize = {300.f, 300.f};
 
-    // lines
-    // for (size_t i = 0; i < 8; i++)
-    // {
-    //     float lineOffset = (i + 1) * (boardSize.x / 9.f);
-    //     engine::gui::elements::LineConfig lineConfig;
-    //     // thicker line for 3x3 boxes
-    //     if ((i + 1) % 3 == 0)
-    //     {
-    //         lineConfig.thickness = 4.f;
-    //     }
-
-    //     // vertical lines
-    //     m_how_to_play_layout->AddLineElement({startPos.x + lineOffset, startPos.y}, {startPos.x + lineOffset, startPos.y + boardSize.y}, lineConfig);
-    //     // horizontal lines
-    //     m_how_to_play_layout->AddLineElement({startPos.x, startPos.y + lineOffset}, {startPos.x + boardSize.x, startPos.y + lineOffset}, lineConfig);
-    // }
-
     int sampleBoard[9][9] = {
         {5, 3, 0, 0, 7, 0, 0, 0, 0},
         {6, 0, 0, 1, 9, 5, 0, 0, 0},
@@ -126,22 +109,12 @@ void MainLayoutGroup::createHowToPlayLayout()
         {0, 0, 0, 4, 1, 9, 0, 0, 5},
         {0, 0, 0, 0, 8, 0, 0, 7, 9}};
 
-    // createSudokuBoard(m_how_to_play_layout, {startPos.x, startPos.y}, boardSize.x / 9.f, sampleBoard);
-    uint16_t gridID = m_how_to_play_layout->AddClickableGridElement({startPos.x, startPos.y}, {boardSize.x / 9.f, boardSize.y / 9.f});
-    auto *gridElement = dynamic_cast<engine::gui::elements::ClickableGridElement *>(m_how_to_play_layout->GetElementById(gridID));
+    uint16_t gridID = m_how_to_play_layout->AddClickableGridElement({startPos.x, startPos.y}, {boardSize.x / 9.f, boardSize.y / 9.f}, 9, 9);
+    auto *gridElement = m_how_to_play_layout->GetClickableGridElementById(gridID);
 
-    gridElement->SetCallback([](int x, int y, std::string &cellText) { //
+    gridElement->SetCallback([this](int x, int y, std::string &cellText) { //
+        m_screen.PlayAudioOneTime("assets/Sound/button.wav");
         DEBUG_PRINT("Clicked cell (" + std::to_string(x) + ", " + std::to_string(y) + ")");
-
-        // for demo, just set the cell text to "1" when clicked if empty
-        if (cellText.empty())
-        {
-            cellText = "1";
-        }
-        else
-        {
-            cellText.clear();
-        }
     });
 
     for (size_t row = 0; row < 9; row++)
@@ -244,41 +217,4 @@ bool MainLayoutGroup::isKeyJustPressed(sf::Keyboard::Key key)
 bool MainLayoutGroup::inLayout(const UILayout &layout) const
 {
     return m_screen.GetCurrentUILayoutID() == layout.GetID();
-}
-
-void MainLayoutGroup::createSudokuBoard(UILayout *layout, const sf::Vector2f &startPos, float cellSize, int board[9][9])
-{
-
-    //     // lines
-    //     for (size_t i = 0; i < 8; i++)
-    //     {
-    //         float lineOffset = (i + 1) * cellSize;
-    //         engine::gui::elements::LineConfig lineConfig;
-    //         // thicker line for 3x3 boxes
-    //         if ((i + 1) % 3 == 0)
-    //         {
-    //             lineConfig.thickness = 4.f;
-    //         }
-
-    //         // vertical lines
-    //         layout->AddLineElement({startPos.x + lineOffset, startPos.y}, {startPos.x + lineOffset, startPos.y + 9 * cellSize}, lineConfig);
-    //         // horizontal lines
-    //         layout->AddLineElement({startPos.x, startPos.y + lineOffset}, {startPos.x + 9 * cellSize, startPos.y + lineOffset}, lineConfig);
-    //     }
-
-    //     // numbers
-    //     for (size_t row = 0; row < 9; row++)
-    //     {
-    //         for (size_t col = 0; col < 9; col++)
-    //         {
-    //             if (board[row][col] != 0)
-    //             {
-    //                 layout->AddTextElement(std::to_string(board[row][col]),
-    //                                        {startPos.x + col * cellSize + cellSize / 3.f, startPos.y + row * cellSize + cellSize / 6.f},
-    //                                        {
-    //                                            .fontSize = static_cast<unsigned int>(cellSize * 0.6f),
-    //                                        });
-    //             }
-    //         }
-    //     }
 }

@@ -32,8 +32,6 @@ private:
 
     uint16_t m_credits_sample_text_id{};
 
-    void createSudokuBoard(engine::UILayout *layout, const sf::Vector2f &startPos, float cellSize, int board[9][9]);
-
 public:
     MainLayoutGroup() = delete;
     MainLayoutGroup(engine::GameScreen &screen);

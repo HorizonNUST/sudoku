@@ -94,6 +94,26 @@ void MainLayoutGroup::createHowToPlayLayout()
     });
     // clang-format on
 
+    constexpr sf::Vector2f boardSize = {250.f, 250.f};
+
+    // lines
+    for (size_t i = 0; i < 8; i++)
+    {
+        float lineOffset = (i + 1) * (boardSize.x / 9.f);
+        engine::gui::elements::LineConfig lineConfig;
+        // thicker line for 3x3 boxes
+        if ((i + 1) % 3 == 0)
+        {
+            lineConfig.thickness = 4.f;
+        }
+
+        // vertical lines
+        m_how_to_play_layout->AddLineElement({startPos.x + lineOffset, startPos.y}, {startPos.x + lineOffset, startPos.y + boardSize.y}, lineConfig);
+        // horizontal lines
+        m_how_to_play_layout->AddLineElement({startPos.x, startPos.y + lineOffset}, {startPos.x + boardSize.x, startPos.y + lineOffset}, lineConfig);
+    }
+
+    // back button
     m_how_to_play_layout->AddButtonElement("Back to Main Menu", {startPos.x, startPos.y + 4 * offsetY}, [this]() { //
         m_screen.PlayAudioOneTime("assets/Sound/button.wav");
         goToMainMenu();

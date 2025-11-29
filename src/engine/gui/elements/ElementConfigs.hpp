@@ -43,4 +43,17 @@ namespace engine::gui::elements
         /// @brief Line height multiplier (1.0 = normal, 1.5 = 1.5x spacing, etc.)
         float lineHeight = 2.f;
     };
+
+    struct LineConfig
+    {
+        sf::Color color = sf::Color::White;
+        float thickness = 2.f;
+    };
+
+    struct RectangleConfig
+    {
+        sf::Color fillColor = sf::Color::Transparent;
+        float outlineThickness = 2.f;
+        sf::Color outlineColor = sf::Color::White;
+    };
 }

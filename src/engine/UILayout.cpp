@@ -18,10 +18,24 @@ uint16_t engine::UILayout::AddImageElement(const std::string &imagePath, const s
     return m_last_element_id;
 }
 
-uint16_t engine::UILayout::AddButtonElement(const std::string &text, const sf::Vector2f &position, std::function<void()> callback, const engine::gui::elements::ButtonConfig& config)
+uint16_t engine::UILayout::AddButtonElement(const std::string &text, const sf::Vector2f &position, std::function<void()> callback, const engine::gui::elements::ButtonConfig &config)
 {
     m_last_element_id++;
     m_elements.emplace_back(std::make_unique<engine::gui::elements::ButtonElement>(m_last_element_id, text, position, std::move(callback), config));
+    return m_last_element_id;
+}
+
+uint16_t engine::UILayout::AddRectangleElement(const sf::Vector2f &position, const sf::Vector2f &size, const engine::gui::elements::RectangleConfig &config)
+{
+    m_last_element_id++;
+    m_elements.emplace_back(std::make_unique<engine::gui::elements::RectangleElement>(m_last_element_id, position, size, config));
+    return m_last_element_id;
+}
+
+uint16_t engine::UILayout::AddLineElement(const sf::Vector2f &startPoint, const sf::Vector2f &endPoint, const engine::gui::elements::LineConfig &config)
+{
+    m_last_element_id++;
+    m_elements.emplace_back(std::make_unique<engine::gui::elements::LineElement>(m_last_element_id, startPoint, endPoint, config));
     return m_last_element_id;
 }
 
@@ -53,7 +67,7 @@ engine::gui::elements::UIElement *engine::UILayout::GetElementById(uint16_t id)
         }
     }
 
-    return nullptr;
+    throw std::runtime_error("Element with ID " + std::to_string(id) + " not found in UILayout " + std::to_string(m_id));
 }
 
 void engine::UILayout::update(const GameScreenData &data)

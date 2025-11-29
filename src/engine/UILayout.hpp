@@ -10,6 +10,8 @@
 #include "TextElement.hpp"
 #include "ImageElement.hpp"
 #include "ButtonElement.hpp"
+#include "RectangleElement.hpp"
+#include "LineElement.hpp"
 #include "utils.hpp"
 
 #include "GameScreen.hpp"
@@ -34,6 +36,8 @@ namespace engine
         uint16_t AddTextElement(const std::string &text, const sf::Vector2f &position, const engine::gui::elements::TextConfig &config = {});
         uint16_t AddImageElement(const std::string &imagePath, const sf::Vector2f &position);
         uint16_t AddButtonElement(const std::string &text, const sf::Vector2f &position, std::function<void()> callback = CONSTANTS::NULLFUNC, const engine::gui::elements::ButtonConfig &config = {});
+        uint16_t AddRectangleElement(const sf::Vector2f &position, const sf::Vector2f &size, const engine::gui::elements::RectangleConfig &config = {});
+        uint16_t AddLineElement(const sf::Vector2f &startPoint, const sf::Vector2f &endPoint, const engine::gui::elements::LineConfig &config = {});
 
         uint16_t GetID() const { return m_id; }
 

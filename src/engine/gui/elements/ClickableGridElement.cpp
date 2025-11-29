@@ -9,116 +9,50 @@ ClickableGridElement::ClickableGridElement(uint16_t id, const sf::Vector2f &posi
 
     if (!m_font.openFromFile(CONSTANTS::FONT_PATH))
     {
-        throw std::runtime_error("Font not found");
+        throw std::runtime_error("Font not found at: " + std::filesystem::absolute(CONSTANTS::FONT_PATH).string());
     }
 
     const size_t &totalCells = m_size_x * m_size_y;
 
     // initilizing containers
-
-    m_cells_text.resize(totalCells);
-    m_cells_background.resize(totalCells);
-    m_cells_config.resize(totalCells);
-    m_cells_disabled.resize(totalCells, false);
-
-    m_lines_config.reserve(m_size_x + m_size_y - 2);
-    m_lines.reserve(m_size_x + m_size_y - 2);
+    m_cells.resize(totalCells);               // resize fills the vector with default initialized data
+    m_lines.reserve(m_size_x + m_size_y - 2); // reserve only changes the size with uninitialized data
 
     // create grid lines
     // vertical lines; skip first and last
     for (size_t x = 1; x < m_size_x; x++)
     {
-        sf::VertexArray line;
         ClickableGridElementLineConfig config;
 
-        sf::Vector2f startPoint = sf::Vector2f{
+        sf::Vector2f startPos{
             m_position.x + x * m_cell_size.x,
             m_position.y //
         };
-        sf::Vector2f endPoint = sf::Vector2f{
+        sf::Vector2f endPos{
             m_position.x + x * m_cell_size.x,
             m_position.y + m_size_y * m_cell_size.y //
         };
-        sf::Vector2f direction = endPoint - startPoint;
 
-        float length = std::sqrt(direction.x * direction.x + direction.y * direction.y);
-        if (length == 0.f)
-            return;
-
-        sf::Vector2f normal = {-direction.y / length, direction.x / length};
-        sf::Vector2f offset = normal * (config.thickness * 0.5f);
-
-        line.setPrimitiveType(sf::PrimitiveType::Triangles);
-        line.resize(6); // 6 vertices
-
-        // first triangle vertices
-        line[0].position = startPoint + offset; // top right vertex
-        line[1].position = startPoint - offset; // top left vertex
-        line[2].position = endPoint - offset;   // bottom left vertex
-
-        // second triangle vertices
-        line[3].position = startPoint + offset; // top right vertex
-        line[4].position = endPoint - offset;   // bottom left vertex
-        line[5].position = endPoint + offset;   // bottom right vertexs
-
-        // settings color for all vertices
-        line[0].color = config.color;
-        line[1].color = config.color;
-        line[2].color = config.color;
-        line[3].color = config.color;
-        line[4].color = config.color;
-        line[5].color = config.color;
-
-        m_lines.push_back(line);
-        m_lines_config.push_back(config);
+        sf::VertexArray line = makeThickLine(startPos, endPos, config.thickness, config.color);
+        m_lines.push_back(Line{config, line});
     }
 
     // horizontal lines; skip first and last
     for (size_t y = 1; y < m_size_y; y++)
     {
-        sf::VertexArray line;
         ClickableGridElementLineConfig config;
 
-        sf::Vector2f startPoint = sf::Vector2f{
+        sf::Vector2f startPos{
             m_position.x,
             m_position.y + y * m_cell_size.y //
         };
-        sf::Vector2f endPoint = sf::Vector2f{
+        sf::Vector2f endPos{
             m_position.x + m_size_x * m_cell_size.x,
             m_position.y + y * m_cell_size.y //
         };
-        sf::Vector2f direction = endPoint - startPoint;
 
-        float length = std::sqrt(direction.x * direction.x + direction.y * direction.y);
-        if (length == 0.f)
-            return;
-
-        sf::Vector2f normal = {-direction.y / length, direction.x / length};
-        sf::Vector2f offset = normal * (config.thickness * 0.5f);
-
-        line.setPrimitiveType(sf::PrimitiveType::Triangles);
-        line.resize(6); // 6 vertices
-
-        // first triangle vertices
-        line[0].position = startPoint + offset; // top right vertex
-        line[1].position = startPoint - offset; // top left vertex
-        line[2].position = endPoint - offset;   // bottom left vertex
-
-        // second triangle vertices
-        line[3].position = startPoint + offset; // top right vertex
-        line[4].position = endPoint - offset;   // bottom left vertex
-        line[5].position = endPoint + offset;   // bottom right vertexs
-
-        // settings color for all vertices
-        line[0].color = config.color;
-        line[1].color = config.color;
-        line[2].color = config.color;
-        line[3].color = config.color;
-        line[4].color = config.color;
-        line[5].color = config.color;
-
-        m_lines.push_back(line);
-        m_lines_config.push_back(config);
+        sf::VertexArray line = makeThickLine(startPos, endPos, config.thickness, config.color);
+        m_lines.push_back(Line{config, line});
     }
 
     // backgrounds
@@ -139,15 +73,15 @@ ClickableGridElement::ClickableGridElement(uint16_t id, const sf::Vector2f &posi
             background.setSize(m_cell_size);
             background.setFillColor(config.fillCellColor);
 
-            m_cells_background[index] = background;
-            m_cells_config[index] = config;
+            m_cells[index].background = background;
+            m_cells[index].config = config;
 
             // text
             sf::Text cellText(m_font);
             cellText.setCharacterSize(config.fontSize);
             cellText.setFillColor(config.fontColor);
             cellText.setStyle(config.fontStyle);
-            m_cells_text[index] = cellText;
+            m_cells[index].text = cellText;
         }
     }
 }
@@ -169,13 +103,13 @@ void ClickableGridElement::Update(const GameScreenData &data)
         const size_t totalCells = m_size_x * m_size_y;
         for (size_t i = 0; i < totalCells; i++)
         {
-            if (m_cells_text[i].has_value())
+            if (m_cells[i].text.has_value())
             {
-                m_cells_text[i].value().setFillColor(m_cells_config[i].fontColor);
-                m_cells_text[i].value().setStyle(m_cells_config[i].fontStyle);
+                m_cells[i].text.value().setFillColor(m_cells[i].config.fontColor);
+                m_cells[i].text.value().setStyle(m_cells[i].config.fontStyle);
             }
 
-            m_cells_background[i].setFillColor(m_cells_config[i].fillCellColor);
+            m_cells[i].background.setFillColor(m_cells[i].config.fillCellColor);
         }
         m_pressedThisFrame = false;
         return;
@@ -193,10 +127,9 @@ void ClickableGridElement::Update(const GameScreenData &data)
     }
 
     size_t index = getUnwrappedIndex(cellX, cellY);
-    ClickableGridElementCellConfig &cellConfig = m_cells_config[index];
 
     // If cell is disabled, ignore input but still allow pressed state to reset on release.
-    if (m_cells_disabled[index])
+    if (m_cells[index].disabled)
     {
         if (!data.isClicking)
             m_pressedThisFrame = false;
@@ -212,9 +145,9 @@ void ClickableGridElement::Update(const GameScreenData &data)
                 std::string mutable_string;
 
                 // get current value
-                if (m_cells_text[index].has_value())
+                if (m_cells[index].text.has_value())
                 {
-                    mutable_string = m_cells_text[index].value().getString().toAnsiString();
+                    mutable_string = m_cells[index].text.value().getString().toAnsiString();
                 }
 
                 // callback
@@ -223,10 +156,10 @@ void ClickableGridElement::Update(const GameScreenData &data)
                 SetCellText(cellX, cellY, mutable_string);
 
                 // style
-                m_cells_text[index].value().setFillColor(cellConfig.fontColor);
-                m_cells_text[index].value().setStyle(cellConfig.fontClickStyle);
+                m_cells[index].text.value().setFillColor(m_cells[index].config.fontColor);
+                m_cells[index].text.value().setStyle(m_cells[index].config.fontClickStyle);
 
-                m_cells_background[index].setFillColor(cellConfig.clickCellFillColor);
+                m_cells[index].background.setFillColor(m_cells[index].config.clickCellFillColor);
             }
 
             m_pressedThisFrame = true;
@@ -237,13 +170,13 @@ void ClickableGridElement::Update(const GameScreenData &data)
         m_pressedThisFrame = false;
 
         // hover style
-        if (m_cells_text[index].has_value())
+        if (m_cells[index].text.has_value())
         {
-            m_cells_text[index].value().setFillColor(cellConfig.fontColor);
-            m_cells_text[index].value().setStyle(cellConfig.fontHoverStyle);
+            m_cells[index].text.value().setFillColor(m_cells[index].config.fontColor);
+            m_cells[index].text.value().setStyle(m_cells[index].config.fontHoverStyle);
         }
 
-        m_cells_background[index].setFillColor(cellConfig.hoverCellFillColor);
+        m_cells[index].background.setFillColor(m_cells[index].config.hoverCellFillColor);
 
         // reset other cells to normal style
         const size_t totalCells = m_size_x * m_size_y;
@@ -253,13 +186,13 @@ void ClickableGridElement::Update(const GameScreenData &data)
             if (i == index)
                 continue;
 
-            if (m_cells_text[i].has_value())
+            if (m_cells[i].text.has_value())
             {
-                m_cells_text[i].value().setFillColor(m_cells_config[i].fontColor);
-                m_cells_text[i].value().setStyle(m_cells_config[i].fontStyle);
+                m_cells[i].text.value().setFillColor(m_cells[i].config.fontColor);
+                m_cells[i].text.value().setStyle(m_cells[i].config.fontStyle);
             }
 
-            m_cells_background[i].setFillColor(m_cells_config[i].fillCellColor);
+            m_cells[i].background.setFillColor(m_cells[i].config.fillCellColor);
         }
     }
 }
@@ -273,7 +206,7 @@ void ClickableGridElement::SetCellDisabled(size_t x, size_t y, bool disabled)
 {
     checkOutOfBounds(x, y);
 
-    m_cells_disabled[getUnwrappedIndex(x, y)] = disabled;
+    m_cells[getUnwrappedIndex(x, y)].disabled = disabled;
 }
 
 void ClickableGridElement::SetCellText(size_t x, size_t y, const std::string &text)
@@ -283,10 +216,10 @@ void ClickableGridElement::SetCellText(size_t x, size_t y, const std::string &te
     size_t index = getUnwrappedIndex(x, y);
 
     // if text not initilized initlize with empty object
-    if (!m_cells_text[index].has_value())
-        m_cells_text[index] = sf::Text(m_font);
+    if (!m_cells[index].text.has_value())
+        m_cells[index].text = sf::Text(m_font);
 
-    sf::Text &cellText = m_cells_text[index].value();
+    sf::Text &cellText = m_cells[index].text.value();
     cellText.setString(sf::String{text});
 
     // center the text
@@ -307,17 +240,17 @@ void engine::gui::elements::ClickableGridElement::SetCellConfig(size_t x, size_t
 
     size_t index = getUnwrappedIndex(x, y);
 
-    m_cells_config[index] = config;
+    m_cells[index].config = config;
 
     // background
-    sf::RectangleShape &background = m_cells_background[index];
+    sf::RectangleShape &background = m_cells[index].background;
     background.setFillColor(config.fillCellColor);
     background.setOutlineThickness(0);
 
     // text
-    if (m_cells_text[index].has_value())
+    if (m_cells[index].text.has_value())
     {
-        sf::Text &cellText = m_cells_text[index].value();
+        sf::Text &cellText = m_cells[index].text.value();
         cellText.setFont(m_font);
         cellText.setCharacterSize(config.fontSize);
         cellText.setFillColor(config.fontColor);
@@ -330,10 +263,10 @@ void engine::gui::elements::ClickableGridElement::SetLineConfig(size_t index, co
     if (index >= m_size_x + m_size_y + 2)
         throw std::runtime_error("Line index out of bounds: " + std::to_string(index));
 
-    m_lines_config[index] = config;
+    m_lines[index].config = config;
 
     // line color
-    sf::VertexArray &line = m_lines[index];
+    sf::VertexArray &line = m_lines[index].vertices;
     line[0].color = config.color;
     line[1].color = config.color;
 }
@@ -345,22 +278,57 @@ void ClickableGridElement::draw(sf::RenderTarget &target, sf::RenderStates state
 
     const size_t totalCells = m_size_x * m_size_y;
 
-    // draw backgrounds
     for (size_t i = 0; i < totalCells; i++)
     {
-        target.draw(m_cells_background[i], states);
+        // draw backgrounds
+        target.draw(m_cells[i].background, states);
+
+        // draw text
+        if (m_cells[i].text.has_value())
+            target.draw(m_cells[i].text.value(), states);
     }
 
     // draw lines
     for (const auto &line : m_lines)
     {
-        target.draw(line, states);
+        target.draw(line.vertices, states);
+    }
+}
+
+sf::VertexArray engine::gui::elements::ClickableGridElement::makeThickLine(const sf::Vector2f a, const sf::Vector2f b, const float thickness, const sf::Color color)
+{
+    sf::Vector2f direction = b - a;
+    float length = std::sqrt(direction.x * direction.x + direction.y * direction.y);
+
+    sf::VertexArray line(sf::PrimitiveType::Triangles, 6);
+
+    if (length == 0.f)
+    {
+        // degenerate, but return valid VA
+        for (int i = 0; i < 6; i++)
+            line[i].color = color;
+        return line;
     }
 
-    // draw texts
-    for (size_t i = 0; i < totalCells; i++)
-    {
-        if (m_cells_text[i].has_value())
-            target.draw(m_cells_text[i].value(), states);
-    }
+    sf::Vector2f normal{
+        -direction.y / length,
+        direction.x / length //
+    };
+    sf::Vector2f offset = normal * (thickness * 0.5f);
+
+    // triangle 1
+    line[0].position = a + offset; // top right vertex
+    line[1].position = a - offset; // top left vertex
+    line[2].position = b - offset; // bottom left vertex
+
+    // triangle 2
+    line[3].position = a + offset; // top right vertex
+    line[4].position = b - offset; // bottom left vertex
+    line[5].position = b + offset; // bottom right vertex
+
+    // set color for all vertices
+    for (int i = 0; i < 6; i++)
+        line[i].color = color;
+
+    return line;
 }

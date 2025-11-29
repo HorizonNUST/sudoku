@@ -117,9 +117,9 @@ void MainLayoutGroup::createHowToPlayLayout()
         DEBUG_PRINT("Clicked cell (" + std::to_string(x) + ", " + std::to_string(y) + ")");
     });
 
-    for (size_t row = 0; row < 9; row++)
+    for (size_t row = 0; row < gridElement->GetSizeY(); row++)
     {
-        for (size_t col = 0; col < 9; col++)
+        for (size_t col = 0; col < gridElement->GetSizeX(); col++)
         {
             if (sampleBoard[row][col] != 0)
             {

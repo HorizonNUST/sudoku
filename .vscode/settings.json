@@ -37,6 +37,12 @@
         "string_view": "cpp",
         "typeinfo": "cpp",
         "vector": "cpp",
-        "algorithm": "cpp"
+        "algorithm": "cpp",
+        "bitset": "cpp",
+        "deque": "cpp",
+        "unordered_map": "cpp",
+        "variant": "cpp",
+        "map": "cpp",
+        "span": "cpp"
     },
 }

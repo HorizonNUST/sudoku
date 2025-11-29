@@ -39,6 +39,13 @@ uint16_t engine::UILayout::AddLineElement(const sf::Vector2f &startPoint, const 
     return m_last_element_id;
 }
 
+uint16_t engine::UILayout::AddClickableGridElement(const sf::Vector2f &position, const sf::Vector2f &cellSize)
+{
+    m_last_element_id++;
+    m_elements.emplace_back(std::make_unique<engine::gui::elements::ClickableGridElement>(m_last_element_id, position, cellSize));
+    return m_last_element_id;
+}
+
 void engine::UILayout::ClearLayout()
 {
     m_elements.clear();

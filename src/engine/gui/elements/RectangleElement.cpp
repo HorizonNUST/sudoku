@@ -11,5 +11,8 @@ engine::gui::elements::RectangleElement::RectangleElement(uint16_t id, const sf:
 
 void engine::gui::elements::RectangleElement::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
+    if (IsHidden())
+        return;
+        
     target.draw(m_shape, states);
 }

@@ -71,6 +71,8 @@ namespace engine
 
         uint16_t GetID() const { return m_id; }
 
+        void RemoveElementById(uint16_t id);
+
         void ClearLayout();
         void DisableAllButtons();
 

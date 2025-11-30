@@ -129,13 +129,13 @@ void ClickableGridElement::Update(const GameScreenData &data)
 
     size_t index = getUnwrappedIndex(cellX, cellY);
 
-    // If cell is disabled, ignore input but still allow pressed state to reset on release.
-    if (m_cells[index].disabled)
-    {
-        if (!data.isClicking)
-            m_pressedThisFrame = false;
-        return;
-    }
+    // if cell is disabled, ignore clicks but still allow hover effect
+    // if (m_cells[index].disabled)
+    // {
+    //     if (!data.isClicking)
+    //         m_pressedThisFrame = false;
+    //     return;
+    // }
 
     if (data.isClicking)
     {

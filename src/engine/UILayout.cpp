@@ -46,6 +46,22 @@ uint16_t engine::UILayout::AddClickableGridElement(const sf::Vector2f &position,
     return m_last_element_id;
 }
 
+void engine::UILayout::RemoveElementById(uint16_t id)
+{
+    auto it = std::remove_if(m_elements.begin(), m_elements.end(), [id](const std::unique_ptr<engine::gui::elements::UIElement> &element) { //
+        return element->GetID() == id;
+    });
+    
+    if (it != m_elements.end())
+    {
+        m_elements.erase(it, m_elements.end());
+    }
+    else
+    {
+        throw std::runtime_error("Element with ID " + std::to_string(id) + " not found in UILayout " + std::to_string(m_id));
+    }
+}
+
 void engine::UILayout::ClearLayout()
 {
     m_elements.clear();

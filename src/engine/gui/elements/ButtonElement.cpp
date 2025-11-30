@@ -2,7 +2,7 @@
 #include "utils.hpp"
 
 engine::gui::elements::ButtonElement::ButtonElement(uint16_t id, const std::string &text, const sf::Vector2f &position, std::function<void()> callback, ButtonConfig config)
-    : m_callback(callback), m_config(config)
+    : m_callback(callback), m_config(config), m_text_string(text), m_position(position)
 {
     setID(id);
 
@@ -11,31 +11,7 @@ engine::gui::elements::ButtonElement::ButtonElement(uint16_t id, const std::stri
         throw std::runtime_error("Font not found");
     }
 
-    m_shape.setFillColor(config.fillColor);
-    m_shape.setOutlineThickness(config.outlineThickness);
-    m_shape.setOutlineColor(config.outlineColor);
-
-    m_text = sf::Text(m_font);
-    m_text->setString(text);
-    m_text->setCharacterSize(config.fontSize);
-    m_text->setFillColor(config.fontColor);
-    m_text->setLineSpacing(config.lineHeight);
-
-    sf::FloatRect textBounds = m_text->getLocalBounds();
-
-    m_shape.setPosition({
-        position.x + config.outlineThickness,
-        position.y + config.outlineThickness //
-    });
-    m_shape.setSize({
-        textBounds.size.x + 2.f * config.padding.x,
-        textBounds.size.y + 2.f * config.padding.y //
-    });
-
-    m_text->setOrigin(textBounds.position + textBounds.size / 2.f);
-    m_text->setPosition(
-        m_shape.getPosition() + m_shape.getSize() / 2.f //
-    );
+    SetConfig(config);
 }
 
 inline void engine::gui::elements::ButtonElement::SetText(const std::string &newText)
@@ -83,6 +59,36 @@ void engine::gui::elements::ButtonElement::Update(const GameScreenData &data)
     {
         m_text->setStyle(m_config.fontStyle);
     }
+}
+
+void engine::gui::elements::ButtonElement::SetConfig(const ButtonConfig &config)
+{
+    m_shape.setFillColor(config.fillColor);
+    m_shape.setOutlineThickness(config.outlineThickness);
+    m_shape.setOutlineColor(config.outlineColor);
+
+    m_text = sf::Text(m_font);
+    m_text->setString(m_text_string);
+    m_text->setCharacterSize(config.fontSize);
+    m_text->setFillColor(config.fontColor);
+    m_text->setLineSpacing(config.lineHeight);
+
+    sf::FloatRect textBounds = m_text->getLocalBounds();
+
+    m_shape.setPosition({
+        m_position.x + config.outlineThickness,
+        m_position.y + config.outlineThickness //
+    });
+
+    m_shape.setSize({
+        textBounds.size.x + 2.f * config.padding.x,
+        textBounds.size.y + 2.f * config.padding.y //
+    });
+
+    m_text->setOrigin(textBounds.position + textBounds.size / 2.f);
+    m_text->setPosition(
+        m_shape.getPosition() + m_shape.getSize() / 2.f //
+    );
 }
 
 void engine::gui::elements::ButtonElement::SetCallback(std::function<void()> callback)

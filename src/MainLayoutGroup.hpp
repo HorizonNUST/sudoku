@@ -35,6 +35,8 @@ private:
 
     uint16_t m_credits_sample_text_id{};
 
+     uint16_t m_how_to_play_sample_text_id{};
+
     void createSudokuBoard(engine::UILayout *layout, const sf::Vector2f &position, const sf::Vector2f &size, int board[9][9]);
 
     void sudokuGridCellUpdate(engine::gui::elements::ClickableGridElement *element);

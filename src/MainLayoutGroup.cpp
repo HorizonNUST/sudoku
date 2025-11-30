@@ -135,6 +135,18 @@ void MainLayoutGroup::createHowToPlayLayout()
     });
     // clang-format on
 
+    // show hide button
+    m_how_to_play_layout->AddButtonElement("Show/Hide Text", {startPos.x, startPos.y + offsetY}, [this]() { //
+        m_screen.PlayAudioOneTime("assets/Sound/button.wav");
+
+        auto *element = m_how_to_play_layout->GetElementById(m_how_to_play_sample_text_id);
+        element->SetHidden(!element->IsHidden());
+    });
+
+    // show hide text
+    m_how_to_play_sample_text_id = m_how_to_play_layout->AddTextElement("Fill the grid so each row, column, and box\ncontains all required numbers or symbols\nwithout repeating. Use the given clues and\nplace valid numbers until the entire grid\nis completed with no rule violations.", {startPos.x, startPos.y + 2 * offsetY});
+    m_how_to_play_layout->GetElementById(m_how_to_play_sample_text_id)->SetHidden(true);
+
     // back button
     m_how_to_play_layout->AddButtonElement("Back to Main Menu", {startPos.x, startPos.y + 4 * offsetY}, [this]() { //
         m_screen.PlayAudioOneTime("assets/Sound/button.wav");
@@ -181,9 +193,10 @@ void MainLayoutGroup::createCreditsLayout()
     });
 
     // show hide text
-    m_credits_sample_text_id = m_credits_layout->AddTextElement("Sample Show Hide Text!", {startPos.x, startPos.y + 2 * offsetY});
+    m_credits_sample_text_id = m_credits_layout->AddTextElement("Muhammad Mujtaba\nSheharyar Khalid\nAzhan Ali", {startPos.x, startPos.y + 2 * offsetY});
     m_credits_layout->GetElementById(m_credits_sample_text_id)->SetHidden(true);
 
+    // back button
     m_credits_layout->AddButtonElement("Back to Main Menu", {startPos.x, startPos.y + 4 * offsetY}, [this]() { //
         m_screen.PlayAudioOneTime("assets/Sound/button.wav");
         goToMainMenu();

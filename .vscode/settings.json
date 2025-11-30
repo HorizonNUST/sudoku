@@ -44,6 +44,7 @@
         "variant": "cpp",
         "map": "cpp",
         "span": "cpp",
-        "forward_list": "cpp"
+        "forward_list": "cpp",
+        "optional": "cpp"
     },
 }

@@ -24,7 +24,7 @@ namespace engine::gui::elements
 
         void Update(const GameScreenData &data) override;
 
-        void SetCallback(std::function<void(size_t, size_t, std::string &)> callback);
+        void SetCellClickCallback(std::function<void(size_t, size_t, std::string &)> callback);
 
         // cell disabled
         inline bool IsCellDisabled(size_t x, size_t y) const
@@ -35,6 +35,19 @@ namespace engine::gui::elements
         void SetCellDisabled(size_t x, size_t y, bool disabled);
 
         // cell text
+        inline std::string GetCellText(size_t x, size_t y) const
+        {
+            checkOutOfBounds(x, y);
+            size_t index = getUnwrappedIndex(x, y);
+            if (m_cells[index].text.has_value())
+            {
+                return m_cells[index].text->getString();
+            }
+            else
+            {
+                return "";
+            }
+        }
         void SetCellText(size_t x, size_t y, const std::string &text);
 
         // cell config
@@ -46,15 +59,30 @@ namespace engine::gui::elements
         void SetCellConfig(size_t x, size_t y, const ClickableGridElementCellConfig &config);
 
         // lines
-        inline size_t GetNumLines() const { return m_size_x + m_size_y + 2; }
-        inline ClickableGridElementLineConfig GetLineConfig(size_t index) const
+        inline size_t GetNumHorizontalLines() const { return m_size_y - 1; }
+        inline size_t GetNumVerticalLines() const { return m_size_x - 1; }
+        inline ClickableGridElementLineConfig GetHorizontalLineConfig(size_t index) const
         {
-            if (index >= m_size_x + m_size_y + 2)
-                throw std::runtime_error("Line index out of bounds: " + std::to_string(index));
+            if (index >= m_size_y - 1)
+                throw std::runtime_error("Horizontal line index out of bounds: " + std::to_string(index));
 
-            return m_lines[index].config;
+            return m_horizontal_lines[index].config;
         }
-        void SetLineConfig(size_t index, const ClickableGridElementLineConfig &config);
+        void SetHorizontalLineConfig(size_t index, const ClickableGridElementLineConfig &config);
+        inline ClickableGridElementLineConfig GetVerticalLineConfig(size_t index) const
+        {
+            if (index >= m_size_x - 1)
+                throw std::runtime_error("Vertical line index out of bounds: " + std::to_string(index));
+
+            return m_vertical_lines[index].config;
+        }
+        void SetVerticalLineConfig(size_t index, const ClickableGridElementLineConfig &config);
+
+        // update callback
+        void AddUpdateCallback(std::function<void(const GameScreenData &)> callback)
+        {
+            m_update_callbacks.push_back(std::move(callback));
+        }
 
     public:
         // GETTERS
@@ -86,12 +114,15 @@ namespace engine::gui::elements
         // // lines in between cells
         // std::vector<sf::VertexArray> m_lines;
 
+        std::vector<Line> m_vertical_lines;
+        std::vector<Line> m_horizontal_lines;
         std::vector<Cell> m_cells;
-        std::vector<Line> m_lines;
 
         bool m_pressedThisFrame = false;
         // callback that tells what box was clicked, and gives a mutable string representation of the cell's text
-        std::function<void(size_t, size_t, std::string &)> m_callback;
+        std::function<void(size_t, size_t, std::string &)> m_cell_click_callback;
+        // update callbacks
+        std::vector<std::function<void(const GameScreenData &)>> m_update_callbacks;
 
         // position of top-left corner of the grid
         sf::Vector2f m_position;

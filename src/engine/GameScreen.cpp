@@ -6,9 +6,9 @@
 // since soundBuffer is static
 sf::SoundBuffer engine::GameScreen::soundBuffer;
 
-engine::GameScreen::GameScreen()
+engine::GameScreen::GameScreen(const sf::Vector2u& windowSize)
 {
-    m_window = sf::RenderWindow(sf::VideoMode({800u, 600u}), "Sudoku", sf::Style::Titlebar | sf::Style::Close);
+    m_window = sf::RenderWindow(sf::VideoMode(windowSize), "Sudoku", sf::Style::Titlebar | sf::Style::Close);
 }
 
 engine::GameScreen::~GameScreen() {}
@@ -82,7 +82,6 @@ void engine::GameScreen::SetBackgroundMusic(const std::string &path)
     backgroundMusic.setLooping(true);
     backgroundMusic.setVolume(50.f);
     backgroundMusic.play();
-    DEBUG_PRINT("Background music started: " + path);
 }
 
 void engine::GameScreen::PlayAudioOneTime(const std::string &path)
@@ -95,5 +94,4 @@ void engine::GameScreen::PlayAudioOneTime(const std::string &path)
     }
     sound.setVolume(80.f);
     sound.play();
-    DEBUG_PRINT("Played sound: " + path);
 }

@@ -66,7 +66,6 @@ void engine::gui::elements::ButtonElement::Update(const GameScreenData &data)
             // click logic
             if (!m_pressedThisFrame)
             {
-                DEBUG_PRINT("CLICK");
                 m_callback();
                 m_text->setStyle(m_config.fontClickStyle);
 

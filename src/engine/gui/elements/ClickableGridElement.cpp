@@ -15,8 +15,9 @@ ClickableGridElement::ClickableGridElement(uint16_t id, const sf::Vector2f &posi
     const size_t &totalCells = m_size_x * m_size_y;
 
     // initilizing containers
-    m_cells.resize(totalCells);               // resize fills the vector with default initialized data
-    m_lines.reserve(m_size_x + m_size_y - 2); // reserve only changes the size with uninitialized data
+    m_cells.resize(totalCells);             // resize fills the vector with default initialized data
+    m_vertical_lines.reserve(m_size_x - 1); // reserve only changes the size with uninitialized data
+    m_horizontal_lines.reserve(m_size_y - 1);
 
     // create grid lines
     // vertical lines; skip first and last
@@ -34,7 +35,7 @@ ClickableGridElement::ClickableGridElement(uint16_t id, const sf::Vector2f &posi
         };
 
         sf::VertexArray line = makeThickLine(startPos, endPos, config.thickness, config.color);
-        m_lines.push_back(Line{config, line});
+        m_vertical_lines.push_back(Line{config, line});
     }
 
     // horizontal lines; skip first and last
@@ -52,7 +53,7 @@ ClickableGridElement::ClickableGridElement(uint16_t id, const sf::Vector2f &posi
         };
 
         sf::VertexArray line = makeThickLine(startPos, endPos, config.thickness, config.color);
-        m_lines.push_back(Line{config, line});
+        m_horizontal_lines.push_back(Line{config, line});
     }
 
     // backgrounds
@@ -140,7 +141,7 @@ void ClickableGridElement::Update(const GameScreenData &data)
     {
         if (!m_pressedThisFrame)
         {
-            if (m_callback)
+            if (m_cell_click_callback)
             {
                 std::string mutable_string;
 
@@ -151,7 +152,7 @@ void ClickableGridElement::Update(const GameScreenData &data)
                 }
 
                 // callback
-                m_callback(cellX, cellY, mutable_string);
+                m_cell_click_callback(cellX, cellY, mutable_string);
 
                 SetCellText(cellX, cellY, mutable_string);
 
@@ -195,11 +196,17 @@ void ClickableGridElement::Update(const GameScreenData &data)
             m_cells[i].background.setFillColor(m_cells[i].config.fillCellColor);
         }
     }
+
+    // call update callbacks
+    for (const auto &callback : m_update_callbacks)
+    {
+        callback(data);
+    }
 }
 
-void ClickableGridElement::SetCallback(std::function<void(size_t, size_t, std::string &)> callback)
+void ClickableGridElement::SetCellClickCallback(std::function<void(size_t, size_t, std::string &)> callback)
 {
-    m_callback = std::move(callback);
+    m_cell_click_callback = std::move(callback);
 }
 
 void ClickableGridElement::SetCellDisabled(size_t x, size_t y, bool disabled)
@@ -258,17 +265,36 @@ void engine::gui::elements::ClickableGridElement::SetCellConfig(size_t x, size_t
     }
 }
 
-void engine::gui::elements::ClickableGridElement::SetLineConfig(size_t index, const ClickableGridElementLineConfig &config)
+void engine::gui::elements::ClickableGridElement::SetHorizontalLineConfig(size_t index, const ClickableGridElementLineConfig &config)
 {
-    if (index >= m_size_x + m_size_y + 2)
-        throw std::runtime_error("Line index out of bounds: " + std::to_string(index));
+    if (index >= m_size_y - 1)
+        throw std::runtime_error("Horizontal line index out of bounds: " + std::to_string(index));
 
-    m_lines[index].config = config;
+    m_horizontal_lines[index].config = config;
 
-    // line color
-    sf::VertexArray &line = m_lines[index].vertices;
-    line[0].color = config.color;
-    line[1].color = config.color;
+    // regenerate line
+    float y = m_position.y + (index + 1) * m_cell_size.y;
+
+    sf::Vector2f startPos{m_position.x, y};
+    sf::Vector2f endPos{m_position.x + m_size_x * m_cell_size.x, y};
+
+    m_horizontal_lines[index].vertices = makeThickLine(startPos, endPos, config.thickness, config.color);
+}
+
+void engine::gui::elements::ClickableGridElement::SetVerticalLineConfig(size_t index, const ClickableGridElementLineConfig &config)
+{
+    if (index >= m_size_x - 1)
+        throw std::runtime_error("Vertical line index out of bounds: " + std::to_string(index));
+
+    m_vertical_lines[index].config = config;
+
+    // regenerate line
+    float x = m_position.x + (index + 1) * m_cell_size.x;
+
+    sf::Vector2f startPos{x, m_position.y};
+    sf::Vector2f endPos{x, m_position.y + m_size_y * m_cell_size.y};
+
+    m_vertical_lines[index].vertices = makeThickLine(startPos, endPos, config.thickness, config.color);
 }
 
 void ClickableGridElement::draw(sf::RenderTarget &target, sf::RenderStates states) const
@@ -289,7 +315,12 @@ void ClickableGridElement::draw(sf::RenderTarget &target, sf::RenderStates state
     }
 
     // draw lines
-    for (const auto &line : m_lines)
+    for (const auto &line : m_vertical_lines)
+    {
+        target.draw(line.vertices, states);
+    }
+
+    for (const auto &line : m_horizontal_lines)
     {
         target.draw(line.vertices, states);
     }

@@ -26,7 +26,7 @@ namespace engine
         static sf::SoundBuffer soundBuffer; // for short sound
 
     public:
-        GameScreen();
+        GameScreen(const sf::Vector2u& windowSize = {800u, 600u});
         ~GameScreen();
 
         uint16_t GetCurrentUILayoutID() const;

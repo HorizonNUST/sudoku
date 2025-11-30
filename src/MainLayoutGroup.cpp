@@ -260,8 +260,17 @@ void MainLayoutGroup::createCreditsLayout()
     });
     // clang-format on
 
-    // credits text (always visible)
-    m_credits_layout->AddTextElement("Muhammad Mujtaba\nSheharyar Khalid\nAzhan Ali", {startPos.x, startPos.y + offsetY});
+    // credit text
+    m_credits_sample_text_id = m_credits_layout->AddTextElement(
+        "Contributors:\n"
+        "- Muhammad Mujtaba\n"
+        "- Sheharyar Khalid\n"
+        "- Azhan Ali\n\n"
+        "Attributions:\n"
+        "- FONT: https://fonts.google.com/\n"
+        "- SOUND: https://pixabay.com/"
+        ,
+        {startPos.x, startPos.y});
 
     m_credits_layout->AddButtonElement("Back to Main Menu", {startPos.x, startPos.y + 5 * offsetY}, [this]() { //
         m_screen.PlayAudioOneTime(CONSTANTS::SOUND_BUTTON_PATH);

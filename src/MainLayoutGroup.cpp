@@ -8,26 +8,33 @@ MainLayoutGroup::MainLayoutGroup(GameScreen &screen)
 {
     m_main_menu_layout = new UILayout(0);
     m_start_game_layout = new UILayout(1);
-    m_how_to_play_layout = new UILayout(2);
-    m_high_scores_layout = new UILayout(3);
-    m_credits_layout = new UILayout(4);
+    m_game_layout = new UILayout(2);
+    m_how_to_play_layout = new UILayout(3);
+    m_high_scores_layout = new UILayout(4);
+    m_credits_layout = new UILayout(5);
 
     createMainMenuLayout();
     createStartGameLayout();
+    createGameLayout();
     createHowToPlayLayout();
     createHighScoresLayout();
     createCreditsLayout();
 
     goToMainMenu();
+
+    updateStartGameLayoutButtonsState();
 }
 
 MainLayoutGroup::~MainLayoutGroup()
 {
     delete m_main_menu_layout;
     delete m_start_game_layout;
+    delete m_game_layout;
     delete m_how_to_play_layout;
     delete m_high_scores_layout;
     delete m_credits_layout;
+
+    delete m_sudoku;
 }
 
 void MainLayoutGroup::Update(const GameScreenData &data)
@@ -101,23 +108,73 @@ void MainLayoutGroup::createStartGameLayout()
     });
     // clang-format on
 
-    constexpr sf::Vector2f boardSize = {300.f, 300.f};
+    // start button
+    m_start_game_layout->AddButtonElement("Start Game", {startPos.x, startPos.y + 0 * offsetY}, [this]() { //
+        m_screen.PlayAudioOneTime("assets/Sound/button.wav");
+        goToGame();
+    });
 
-    int sampleBoard[9][9] = {
-        {5, 3, 0, 0, 7, 0, 0, 0, 0},
-        {6, 0, 0, 1, 9, 5, 0, 0, 0},
-        {0, 9, 8, 0, 0, 0, 0, 6, 0},
-        {8, 0, 0, 0, 6, 0, 0, 0, 3},
-        {4, 0, 0, 8, 0, 3, 0, 0, 1},
-        {7, 0, 0, 0, 2, 0, 0, 0, 6},
-        {0, 6, 0, 0, 0, 0, 2, 8, 0},
-        {0, 0, 0, 4, 1, 9, 0, 0, 5},
-        {0, 0, 0, 0, 8, 0, 0, 7, 9}};
-
-    createSudokuBoard(m_start_game_layout, {startPos.x, startPos.y}, boardSize, sampleBoard);
+    // easy button
+    m_start_game_easy_button_id = m_start_game_layout->AddButtonElement("Easy", {startPos.x, startPos.y + 1 * offsetY}, [this]() { //
+        m_screen.PlayAudioOneTime("assets/Sound/button.wav");
+        m_game_config.difficulty = Difficulty::Easy;
+        updateStartGameLayoutButtonsState();
+    });
+    // medium button
+    m_start_game_medium_button_id = m_start_game_layout->AddButtonElement("Medium", {startPos.x, startPos.y + 2 * offsetY}, [this]() { //
+        m_screen.PlayAudioOneTime("assets/Sound/button.wav");
+        m_game_config.difficulty = Difficulty::Medium;
+        updateStartGameLayoutButtonsState();
+    });
+    // hard button
+    m_start_game_hard_button_id = m_start_game_layout->AddButtonElement("Hard", {startPos.x, startPos.y + 3 * offsetY}, [this]() { //
+        m_screen.PlayAudioOneTime("assets/Sound/button.wav");
+        m_game_config.difficulty = Difficulty::Hard;
+        updateStartGameLayoutButtonsState();
+    });
 
     // back button
     m_start_game_layout->AddButtonElement("Back to Main Menu", {startPos.x, startPos.y + 4 * offsetY}, [this]() { //
+        m_screen.PlayAudioOneTime("assets/Sound/button.wav");
+        goToMainMenu();
+    });
+}
+
+void MainLayoutGroup::createGameLayout()
+{
+    constexpr sf::Vector2f startPos = {50.f, 150.f};
+    constexpr float offsetY = 75.f;
+
+    // title
+    // clang-format off
+    m_game_layout->AddTextElement("How To Play", {50.f, 50.f}, {
+        .fontSize = 48, //
+    });
+    // clang-format on
+
+    // board
+    constexpr float CELL_SIZE = 35.f;
+    sf::Vector2f boardSize = {
+        CELL_SIZE * 9.f,
+        CELL_SIZE * 9.f //
+    };
+
+    m_sudoku = new Sudoku;
+    m_sudoku->makePuzzle(m_game_config.difficulty);
+
+    int board[9][9];
+    for (int i = 0; i < 9; ++i)
+    {
+        for (int j = 0; j < 9; ++j)
+        {
+            board[i][j] = m_sudoku->getCell(i, j);
+        }
+    }
+
+    createSudokuBoard(m_game_layout, startPos, boardSize, board);
+
+    // back button
+    m_game_layout->AddButtonElement("Back to Main Menu", {startPos.x, startPos.y + 4 * offsetY}, [this]() { //
         m_screen.PlayAudioOneTime("assets/Sound/button.wav");
         goToMainMenu();
     });
@@ -200,6 +257,16 @@ void MainLayoutGroup::goToStartGame()
     m_screen.ChangeUILayout(*m_start_game_layout);
 }
 
+void MainLayoutGroup::goToGame()
+{
+    if (!m_game_layout)
+        return;
+
+    m_game_layout->ClearLayout();
+    createGameLayout(); // recreate game layout to reset board
+    m_screen.ChangeUILayout(*m_game_layout);
+}
+
 void MainLayoutGroup::goToHowToPlay()
 {
     m_screen.ChangeUILayout(*m_how_to_play_layout);
@@ -231,10 +298,29 @@ bool MainLayoutGroup::inLayout(const UILayout &layout) const
     return m_screen.GetCurrentUILayoutID() == layout.GetID();
 }
 
+void MainLayoutGroup::updateStartGameLayoutButtonsState()
+{
+    // highlight selected difficulty
+    auto *easyButton = m_start_game_layout->GetButtonElementById(m_start_game_easy_button_id);
+    auto *mediumButton = m_start_game_layout->GetButtonElementById(m_start_game_medium_button_id);
+    auto *hardButton = m_start_game_layout->GetButtonElementById(m_start_game_hard_button_id);
+
+    ButtonConfig defaultConfig = {};
+    ButtonConfig selectedConfig = {
+        .fontColor = sf::Color::Green,
+    };
+
+    easyButton->SetConfig(m_game_config.difficulty == Difficulty::Easy ? selectedConfig : defaultConfig);
+    mediumButton->SetConfig(m_game_config.difficulty == Difficulty::Medium ? selectedConfig : defaultConfig);
+    hardButton->SetConfig(m_game_config.difficulty == Difficulty::Hard ? selectedConfig : defaultConfig);
+}
+
 void MainLayoutGroup::createSudokuBoard(engine::UILayout *layout, const sf::Vector2f &position, const sf::Vector2f &size, int board[9][9])
 {
-    uint16_t gridID = layout->AddClickableGridElement(position, {size.x / 9.f, size.y / 9.f}, 9, 9);
+    uint16_t gridID = layout->AddClickableGridElement(position, sf::Vector2f{size.x / 9.f, size.y / 9.f}, 9, 9);
     auto *gridElement = layout->GetClickableGridElementById(gridID);
+
+    DEBUG_PRINT("Created Sudoku Board: " + std::to_string(gridElement->GetSizeX()) + "x" + std::to_string(gridElement->GetSizeY()));
 
     // init board
     for (size_t row = 0; row < gridElement->GetSizeY(); row++)

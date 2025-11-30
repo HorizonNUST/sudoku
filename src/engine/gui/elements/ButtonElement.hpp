@@ -21,6 +21,9 @@ namespace engine::gui::elements
 
         void Update(const GameScreenData &data) override;
 
+        inline ButtonConfig GetConfig() const { return m_config; }
+        void SetConfig(const ButtonConfig &config);
+
         /// @brief Add callback for when button is clicked
         /// @param callback the callback of type `std::function<void()>` i.e a lambda that takes nothing as parameters
         void SetCallback(std::function<void()> callback);
@@ -54,6 +57,9 @@ namespace engine::gui::elements
 
         bool m_pressedThisFrame = false;
         std::function<void()> m_callback;
+
+        std::string m_text_string;
+        sf::Vector2f m_position;
 
     protected:
         void draw(sf::RenderTarget &target, sf::RenderStates states) const override;

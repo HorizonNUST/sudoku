@@ -4,23 +4,32 @@
 
 - **Azhan Ali** - Sudoku Algorithm
 - **Muhammad Mujtaba** - GUI in SFML
-- **Sheharyar Khalid** - User interface, Art ,testing
+- **Sheharyar Khalid** - User interface, Art Design, Testing
 
 ## Overview
 
-This is a console-based Sudoku game written in C++ with SFML:
+This is a GUI-based Sudoku game written in C++ with SFML:
 
-- Allows users to play Sudoku puzzles of varying difficulty levels
-- Includes an automatic solver using backtracking algorithm
+- Has difficulty
+- Show Solution, If Required
 - Validates moves in real-time according to Sudoku rules
 
 ## Execution Instructions (assuming VS Code)
+
+### Prerequisites
+
+- `Ninja` in CLI
+  - On Mac use `brew install ninja`
+  - On Windows use `choco install ninja`, assuming `Chocolatey` is installed, if not install it
+- `CMake` in CLI
+- `Git` in CLI
 
 ### Initial steps after cloning
 
 - CMake Preset have been setup depending on platform
 - Select Preset `Win64` or `Mac` depending on platform
 - Run `setup.bat` or `setup.sh` according to platform
+- This clones the `vcpkg` package and installs `SFML`
 
 ### Running the Game
 

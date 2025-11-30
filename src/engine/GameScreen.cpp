@@ -53,7 +53,7 @@ void engine::GameScreen::StartLoop()
         // get m_data after polling events
         m_data.mousePos = sf::Mouse::getPosition(m_window);
 
-        m_window.clear();
+        m_window.clear(CONSTANTS::BACKGROUND_COLOR);
 
         for (const auto &callback : m_update_callbacks)
         {

@@ -12,4 +12,6 @@ namespace CONSTANTS
     constexpr static inline sf::Vector2f ZERO_VECTOR2F = {0.f, 0.f};
 
     constexpr static inline std::string_view FONT_PATH = "assets/fonts/dogica/TTF/dogica.ttf";
+
+    constexpr static inline sf::Color BACKGROUND_COLOR = sf::Color(30, 30, 30);
 }

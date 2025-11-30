@@ -2,6 +2,8 @@
 
 #include "GameScreen.hpp"
 #include "UILayout.hpp"
+#include "SudokuBoardStyles.hpp"
+
 #include "sudoku.hpp"
 
 #include "utils.hpp"
@@ -54,7 +56,6 @@ private:
 
     bool inLayout(const engine::UILayout &layout) const;
 
-
     // start game
     uint16_t m_start_game_easy_button_id{};
     uint16_t m_start_game_medium_button_id{};
@@ -67,7 +68,7 @@ private:
     uint16_t m_show_solution_button_id{};
     uint16_t m_game_status_text_id{};
 
-    void setGameStatus(const State& state);
+    void setGameStatus(const State &state);
 
     // credits
     uint16_t m_credits_sample_text_id{};

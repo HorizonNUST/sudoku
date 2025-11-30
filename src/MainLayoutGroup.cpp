@@ -348,14 +348,9 @@ void MainLayoutGroup::updateStartGameLayoutButtonsState()
     auto *mediumButton = m_start_game_layout->GetButtonElementById(m_start_game_medium_button_id);
     auto *hardButton = m_start_game_layout->GetButtonElementById(m_start_game_hard_button_id);
 
-    ButtonConfig defaultConfig = {};
-    ButtonConfig selectedConfig = {
-        .fontColor = sf::Color::Green,
-    };
-
-    easyButton->SetConfig(m_game_config.difficulty == Difficulty::Easy ? selectedConfig : defaultConfig);
-    mediumButton->SetConfig(m_game_config.difficulty == Difficulty::Medium ? selectedConfig : defaultConfig);
-    hardButton->SetConfig(m_game_config.difficulty == Difficulty::Hard ? selectedConfig : defaultConfig);
+    easyButton->SetConfig(m_game_config.difficulty == Difficulty::Easy ? SudokuBoardStyles::selectedToggleButtonConfig : SudokuBoardStyles::defaultToggleButtonConfig);
+    mediumButton->SetConfig(m_game_config.difficulty == Difficulty::Medium ? SudokuBoardStyles::selectedToggleButtonConfig : SudokuBoardStyles::defaultToggleButtonConfig);
+    hardButton->SetConfig(m_game_config.difficulty == Difficulty::Hard ? SudokuBoardStyles::selectedToggleButtonConfig : SudokuBoardStyles::defaultToggleButtonConfig);
 }
 
 void MainLayoutGroup::setGameStatus(const State &state)
@@ -401,9 +396,7 @@ uint16_t MainLayoutGroup::createSudokuBoard(engine::UILayout *layout, const sf::
             {
                 gridElement->SetCellText(col, row, std::to_string(board[row][col]));
                 gridElement->SetCellDisabled(col, row, true);
-                gridElement->SetCellConfig(col, row, ClickableGridElementCellConfig{
-                                                         .fontColor = sf::Color::Yellow,
-                                                     });
+                gridElement->SetCellConfig(col, row, SudokuBoardStyles::prefilledCell);
             }
         }
     }
@@ -522,19 +515,12 @@ void MainLayoutGroup::sudokuGridCellUpdate(engine::gui::elements::ClickableGridE
         }
     }
 
-    ClickableGridElementCellConfig invalidConfig = element->GetCellConfig(*m_last_clicked_cell_x, *m_last_clicked_cell_y);
-    invalidConfig = ClickableGridElementCellConfig{
-        .fontColor = sf::Color::Red,
-    };
-
     // clear previous invalid highlights
     for (size_t row = 0; row < element->GetSizeY(); row++)
     {
         for (size_t col = 0; col < element->GetSizeX(); col++)
         {
-            ClickableGridElementCellConfig defaultConfig = element->GetCellConfig(col, row);
-            defaultConfig.fontColor = sf::Color::White;
-            element->SetCellConfig(col, row, defaultConfig);
+            element->SetCellConfig(col, row, SudokuBoardStyles::defaultCell);
         }
     }
 
@@ -561,7 +547,7 @@ void MainLayoutGroup::sudokuGridCellUpdate(engine::gui::elements::ClickableGridE
             // set config
             if (invalid)
             {
-                element->SetCellConfig(col, row, invalidConfig);
+                element->SetCellConfig(col, row, SudokuBoardStyles::invalidCell);
             }
         }
     }
@@ -569,24 +555,15 @@ void MainLayoutGroup::sudokuGridCellUpdate(engine::gui::elements::ClickableGridE
 
 void MainLayoutGroup::highlightSudokuCells(engine::gui::elements::ClickableGridElement *element, size_t x, size_t y)
 {
-    ClickableGridElementCellConfig highlightConfig = element->GetCellConfig(x, y);
-    highlightConfig = ClickableGridElementCellConfig{
-        .fillCellColor = sf::Color(150, 150, 255),
-        .hoverCellFillColor = sf::Color(200, 200, 255),
-        .clickCellFillColor = sf::Color(255, 255, 255),
-    };
-
     // clear all highlights
     for (size_t row = 0; row < element->GetSizeY(); row++)
     {
         for (size_t col = 0; col < element->GetSizeX(); col++)
         {
-            element->SetCellConfig(col, row, ClickableGridElementCellConfig{});
+            element->SetCellConfig(col, row, SudokuBoardStyles::defaultCell);
             // for disabled cells, keep font color yellow
             if (element->IsCellDisabled(col, row))
-                element->SetCellConfig(col, row, ClickableGridElementCellConfig{
-                                                     .fontColor = sf::Color::Yellow,
-                                                 });
+                element->SetCellConfig(col, row, SudokuBoardStyles::prefilledCell);
         }
     }
 
@@ -596,7 +573,7 @@ void MainLayoutGroup::highlightSudokuCells(engine::gui::elements::ClickableGridE
         if (col == static_cast<size_t>(x))
             continue;
 
-        element->SetCellConfig(col, y, highlightConfig);
+        element->SetCellConfig(col, y, SudokuBoardStyles::highlightedCell);
     }
 
     // highlight column
@@ -605,7 +582,7 @@ void MainLayoutGroup::highlightSudokuCells(engine::gui::elements::ClickableGridE
         if (row == static_cast<size_t>(y))
             continue;
 
-        element->SetCellConfig(x, row, highlightConfig);
+        element->SetCellConfig(x, row, SudokuBoardStyles::highlightedCell);
     }
 
     // highlight box
@@ -618,7 +595,7 @@ void MainLayoutGroup::highlightSudokuCells(engine::gui::elements::ClickableGridE
             if (col == static_cast<size_t>(x) || row == static_cast<size_t>(y))
                 continue;
 
-            element->SetCellConfig(col, row, highlightConfig);
+            element->SetCellConfig(col, row, SudokuBoardStyles::highlightedCell);
         }
     }
 }

@@ -520,6 +520,10 @@ void MainLayoutGroup::sudokuGridCellUpdate(engine::gui::elements::ClickableGridE
     {
         for (size_t col = 0; col < element->GetSizeX(); col++)
         {
+            // if element is disabled, skip
+            if (element->IsCellDisabled(col, row))
+                continue;
+
             std::string cellText = element->GetCellText(col, row);
             if (cellText.empty())
                 continue;

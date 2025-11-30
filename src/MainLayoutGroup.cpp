@@ -45,14 +45,14 @@ void MainLayoutGroup::Update(const GameScreenData &data)
         goToMainMenu();
     }
 
-    if (isKeyJustPressed(sf::Keyboard::Key::H) && inLayout(*m_credits_layout))
+    /*if (isKeyJustPressed(sf::Keyboard::Key::H) && inLayout(*m_credits_layout))
     {
         DEBUG_PRINT("Toggle Credits Text");
 
         // show hide button in credits layout
         auto *element = m_credits_layout->GetElementById(m_credits_sample_text_id);
         element->SetHidden(!element->IsHidden());
-    }
+    }*/
 }
 
 void MainLayoutGroup::createMainMenuLayout()
@@ -230,6 +230,33 @@ void MainLayoutGroup::createHowToPlayLayout()
     });
     // clang-format on
 
+    // Sudoku board at top
+    constexpr sf::Vector2f boardSize = {300.f, 300.f};
+    
+    int sampleBoard[9][9] = {
+        {5, 3, 0, 0, 7, 0, 0, 0, 0},
+        {6, 0, 0, 1, 9, 5, 0, 0, 0},
+        {0, 9, 8, 0, 0, 0, 0, 6, 0},
+        {8, 0, 0, 0, 6, 0, 0, 0, 3},
+        {4, 0, 0, 8, 0, 3, 0, 0, 1},
+        {7, 0, 0, 0, 2, 0, 0, 0, 6},
+        {0, 6, 0, 0, 0, 0, 2, 8, 0},
+        {0, 0, 0, 4, 1, 9, 0, 0, 5},
+        {0, 0, 0, 0, 8, 0, 0, 7, 9}};
+
+    createSudokuBoard(m_how_to_play_layout, {startPos.x, startPos.y}, boardSize, sampleBoard);
+
+    // Sudoku rules text (always visible)
+    m_how_to_play_layout->AddTextElement(
+        "SUDOKU RULES:\n\n"
+        "1. Fill the 9x9 grid with numbers 1-9\n\n"
+        "2. Each ROW must contain all digits\n   from 1 to 9 without repetition\n\n"
+        "3. Each COLUMN must contain all digits\n   from 1 to 9 without repetition\n\n"
+        "4. Each 3x3 BOX must contain all digits\n   from 1 to 9 without repetition\n\n"
+        "5. Use the given clues to deduce\n   the missing numbers\n\n"
+        "6. Click a cell and press 1-9 to\n   fill in numbers",
+        {startPos.x + boardSize.x + 50.f, startPos.y});
+
     // back button
     m_how_to_play_layout->AddButtonElement("Back to Main Menu", {startPos.x, startPos.y + 7 * offsetY}, [this]() { //
         m_screen.PlayAudioOneTime("assets/Sound/button.wav");
@@ -267,17 +294,8 @@ void MainLayoutGroup::createCreditsLayout()
     });
     // clang-format on
 
-    // show hide button
-    m_credits_layout->AddButtonElement("Show/Hide Text", {startPos.x, startPos.y + offsetY}, [this]() { //
-        m_screen.PlayAudioOneTime("assets/Sound/button.wav");
-
-        auto *element = m_credits_layout->GetElementById(m_credits_sample_text_id);
-        element->SetHidden(!element->IsHidden());
-    });
-
-    // show hide text
-    m_credits_sample_text_id = m_credits_layout->AddTextElement("Sample Show Hide Text!", {startPos.x, startPos.y + 2 * offsetY});
-    m_credits_layout->GetElementById(m_credits_sample_text_id)->SetHidden(true);
+    // credits text (always visible)
+    m_credits_layout->AddTextElement("Muhammad Mujtaba\nSheharyar Khalid\nAzhan Ali", {startPos.x, startPos.y + offsetY});
 
     m_credits_layout->AddButtonElement("Back to Main Menu", {startPos.x, startPos.y + 7 * offsetY}, [this]() { //
         m_screen.PlayAudioOneTime("assets/Sound/button.wav");

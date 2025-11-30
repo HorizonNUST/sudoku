@@ -2,7 +2,7 @@
 
 **Team Members & Roles:**
 
-- **Azhan Ali** - Sudoku Algorithm
+- **Azhan Ali** - Sudoku Algorithm, Create Doc
 - **Muhammad Mujtaba** - GUI in SFML
 - **Sheharyar Khalid** - User interface, Art Design, Testing
 

@@ -67,6 +67,11 @@ add_custom_target(copy_assets ALL
 add_dependencies(main copy_assets)
 
 # CHANGE: link installed libraries here
+#target_link_libraries(
+#    main PRIVATE
+#)
+
+# CHANGE: link installed libraries here
 target_link_libraries(
     main PRIVATE
     SFML::Network

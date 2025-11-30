@@ -4,7 +4,7 @@ setlocal enabledelayedexpansion
 :: * parsing arguments
 set "BUILD_TYPE=Debug"
 if "%~1"=="--release" (
-    set "BUILD_TYPE=Release"
+set "BUILD_TYPE=Release"
 )
 :: * parsing arguments end
 
@@ -33,7 +33,7 @@ set ERRLEV=0
 
 :: ensure build folder exists
 if not exist build (
-    mkdir build
+mkdir build
 )
 
 :: setting preset and overriding build type
@@ -44,6 +44,13 @@ echo %YELLOW%Compiling using CMake preset...%RESET%
 cmake --build --preset default-build --config %BUILD_TYPE%
 
 echo %PURPLE%Executable Started...%RESET%
+
+set "EXE_PATH=build\%BUILD_TYPE%\main.exe"
+
+if not exist "!EXE_PATH!" (
+    echo %RED%Executable not found: !EXE_PATH!%RESET%
+    exit /b 1
+)
 
 set "starttime=%time%"
 build\%BUILD_TYPE%\main.exe

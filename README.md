@@ -51,6 +51,9 @@ int grid[9][9];
 - **Values 1-9** represent filled cells
 - **Pre-filled cells** are marked as prefilled / fixed during gameplay
 
+## Sudoku solver:
+In order to solve the sudoku board backtracking logic was used. This was done by recursions. The function was called again and again to fill the board by numbers from 1-9 using nested for loops. if placing the number didn't break the sudoku rules function call returns true, but if it did break the rules function returns false and the function backtracks by setting that cell to 0 and then looping again trying different number. In this way we beautifully use recursion to fill the board by numbers until an valid board is formed and we store the result
+
 ## AI Tool Reflection
 
 - Received suggestions for clear code commenting

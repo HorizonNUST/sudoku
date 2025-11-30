@@ -268,7 +268,8 @@ void MainLayoutGroup::createCreditsLayout()
         "- Azhan Ali\n\n"
         "Attributions:\n"
         "- FONT: https://fonts.google.com/\n"
-        "- SOUND: https://pixabay.com/"
+        "- SOUND: https://pixabay.com/\n\n\n"
+        "https://github.com/HorizonNUST/sudoku"
         ,
         {startPos.x, startPos.y});
 

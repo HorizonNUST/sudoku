@@ -45,6 +45,8 @@
         "map": "cpp",
         "span": "cpp",
         "forward_list": "cpp",
-        "optional": "cpp"
+        "optional": "cpp",
+        "cwctype": "cpp",
+        "print": "cpp"
     },
 }

@@ -9,47 +9,30 @@
 struct SudokuBoardStyles
 {
     // cell styles
-    static inline const engine::gui::elements::ClickableGridElementCellConfig defaultCell = {};
+    static inline const engine::gui::elements::ClickableGridElementCellConfig defaultCell = {
+        .fontColor = sf::Color(89, 100, 117),
+    };
 
     static inline const engine::gui::elements::ClickableGridElementCellConfig prefilledCell = {
-        .fontColor = sf::Color::Yellow,
+        .fontColor = sf::Color::White,
+        .fillCellColor = sf::Color(50, 50, 50),
     };
 
     static inline const engine::gui::elements::ClickableGridElementCellConfig highlightedCell = {
-        .fillCellColor = sf::Color(150, 150, 255),
-        .hoverCellFillColor = sf::Color(200, 200, 255),
-        .clickCellFillColor = sf::Color(255, 255, 255),
+        .fontColor = sf::Color(0, 166, 118),
+        .fillCellColor = sf::Color(50, 50, 50),
     };
 
     static inline const engine::gui::elements::ClickableGridElementCellConfig invalidCell = {
         .fontColor = sf::Color::Red,
-    };
-
-    // font styles
-    static inline const engine::gui::elements::TextConfig cellFont = {
-        .fontColor = sf::Color::White,
-        .fontSize = 24,
-        .fontStyle = sf::Text::Style::Bold,
-        .lineHeight = 1.0f,
-    };
-
-    static inline const engine::gui::elements::TextConfig invalidFont = {
-        .fontColor = sf::Color::Red,
-        .fontSize = 24,
-        .fontStyle = sf::Text::Style::Bold,
-        .lineHeight = 1.0f,
-    };
-
-    static inline const engine::gui::elements::TextConfig prefilledFont = {
-        .fontColor = sf::Color::Yellow,
-        .fontSize = 24,
-        .fontStyle = sf::Text::Style::Bold,
-        .lineHeight = 1.0f,
+        .fillCellColor = sf::Color(60, 40, 40),
     };
 
     // button styles
     static inline const engine::gui::elements::ButtonConfig defaultToggleButtonConfig = {};
     static inline const engine::gui::elements::ButtonConfig selectedToggleButtonConfig = {
-        .fontColor = sf::Color::Green,
+        .fontColor = sf::Color(89, 100, 117),
     };
+
+    // text styles (TODO)
 };

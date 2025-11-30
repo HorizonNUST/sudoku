@@ -10,14 +10,12 @@ MainLayoutGroup::MainLayoutGroup(GameScreen &screen)
     m_start_game_layout = new UILayout(1);
     m_game_layout = new UILayout(2);
     m_how_to_play_layout = new UILayout(3);
-    m_high_scores_layout = new UILayout(4);
-    m_credits_layout = new UILayout(5);
+    m_credits_layout = new UILayout(4);
 
     createMainMenuLayout();
     createStartGameLayout();
     createGameLayout();
     createHowToPlayLayout();
-    createHighScoresLayout();
     createCreditsLayout();
 
     goToMainMenu();
@@ -31,7 +29,6 @@ MainLayoutGroup::~MainLayoutGroup()
     delete m_start_game_layout;
     delete m_game_layout;
     delete m_how_to_play_layout;
-    delete m_high_scores_layout;
     delete m_credits_layout;
 
     delete m_sudoku;
@@ -44,25 +41,16 @@ void MainLayoutGroup::Update(const GameScreenData &data)
         DEBUG_PRINT("Escape Pressed -> Main Menu");
         goToMainMenu();
     }
-
-    /*if (isKeyJustPressed(sf::Keyboard::Key::H) && inLayout(*m_credits_layout))
-    {
-        DEBUG_PRINT("Toggle Credits Text");
-
-        // show hide button in credits layout
-        auto *element = m_credits_layout->GetElementById(m_credits_sample_text_id);
-        element->SetHidden(!element->IsHidden());
-    }*/
 }
 
 void MainLayoutGroup::createMainMenuLayout()
 {
-    constexpr sf::Vector2f startPos = {50.f, 150.f};
+    constexpr sf::Vector2f startPos = {100.f, 250.f};
     constexpr float offsetY = 75.f;
 
     // title
     // clang-format off
-    m_main_menu_layout->AddTextElement("Sudoku", {50.f, 50.f}, {
+    m_main_menu_layout->AddTextElement("Sudoku", {100.f, 150.f}, {
         .fontColor = sf::Color::White, //
         .fontSize = 48, //
         .fontStyle = sf::Text::Style::Bold, //
@@ -71,83 +59,78 @@ void MainLayoutGroup::createMainMenuLayout()
     // clang-format on
 
     m_main_menu_layout->AddButtonElement("Start Game", {startPos.x, startPos.y}, [this]() { //
-        m_screen.PlayAudioOneTime("assets/Sound/button.wav");
+        m_screen.PlayAudioOneTime(CONSTANTS::SOUND_BUTTON_PATH);
         goToStartGame();
     });
 
-    m_main_menu_layout->AddButtonElement("How To Play", {startPos.x, startPos.y + offsetY}, [this]() { //
-        m_screen.PlayAudioOneTime("assets/Sound/button.wav");
+    m_main_menu_layout->AddButtonElement("How To Play", {startPos.x, startPos.y + 1 * offsetY}, [this]() { //
+        m_screen.PlayAudioOneTime(CONSTANTS::SOUND_BUTTON_PATH);
         goToHowToPlay();
     });
 
-    m_main_menu_layout->AddButtonElement("High Scores", {startPos.x, startPos.y + 2 * offsetY}, [this]() { //
-        m_screen.PlayAudioOneTime("assets/Sound/button.wav");
-        goToHighScores();
-    });
-
-    m_main_menu_layout->AddButtonElement("Credits", {startPos.x, startPos.y + 3 * offsetY}, [this]() { //
-        m_screen.PlayAudioOneTime("assets/Sound/button.wav");
+    m_main_menu_layout->AddButtonElement("Credits", {startPos.x, startPos.y + 2 * offsetY}, [this]() { //
+        m_screen.PlayAudioOneTime(CONSTANTS::SOUND_BUTTON_PATH);
         goToCredits();
     });
 
-    m_main_menu_layout->AddButtonElement("Exit Game", {startPos.x, startPos.y + 7 * offsetY}, [this]() { //
-        m_screen.PlayAudioOneTime("assets/Sound/button.wav");
+    m_main_menu_layout->AddButtonElement("Exit Game", {startPos.x, startPos.y + 5 * offsetY}, [this]() { //
+        m_screen.PlayAudioOneTime(CONSTANTS::SOUND_BUTTON_PATH);
         m_screen.CloseWindow();
     });
 }
 
 void MainLayoutGroup::createStartGameLayout()
 {
-    constexpr sf::Vector2f startPos = {50.f, 150.f};
+    constexpr sf::Vector2f startPos = {100.f, 250.f};
     constexpr float offsetY = 75.f;
 
     // title
     // clang-format off
-    m_start_game_layout->AddTextElement("Start Game", {50.f, 50.f}, {
+    m_start_game_layout->AddTextElement("Start Game", {100.f, 150.f}, {
         .fontSize = 48, //
     });
     // clang-format on
 
     // start button
     m_start_game_layout->AddButtonElement("Start Game", {startPos.x, startPos.y + 0 * offsetY}, [this]() { //
-        m_screen.PlayAudioOneTime("assets/Sound/button.wav");
+        m_screen.PlayAudioOneTime(CONSTANTS::SOUND_BUTTON_PATH);
         goToGame();
     });
 
     // easy button
     m_start_game_easy_button_id = m_start_game_layout->AddButtonElement("Easy", {startPos.x, startPos.y + 1 * offsetY}, [this]() { //
-        m_screen.PlayAudioOneTime("assets/Sound/button.wav");
+        m_screen.PlayAudioOneTime(CONSTANTS::SOUND_BUTTON_PATH);
         m_game_config.difficulty = Difficulty::Easy;
         updateStartGameLayoutButtonsState();
     });
     // medium button
     m_start_game_medium_button_id = m_start_game_layout->AddButtonElement("Medium", {startPos.x, startPos.y + 2 * offsetY}, [this]() { //
-        m_screen.PlayAudioOneTime("assets/Sound/button.wav");
+        m_screen.PlayAudioOneTime(CONSTANTS::SOUND_BUTTON_PATH);
         m_game_config.difficulty = Difficulty::Medium;
         updateStartGameLayoutButtonsState();
     });
     // hard button
     m_start_game_hard_button_id = m_start_game_layout->AddButtonElement("Hard", {startPos.x, startPos.y + 3 * offsetY}, [this]() { //
-        m_screen.PlayAudioOneTime("assets/Sound/button.wav");
+        m_screen.PlayAudioOneTime(CONSTANTS::SOUND_BUTTON_PATH);
         m_game_config.difficulty = Difficulty::Hard;
         updateStartGameLayoutButtonsState();
     });
 
     // back button
-    m_start_game_layout->AddButtonElement("Back to Main Menu", {startPos.x, startPos.y + 7 * offsetY}, [this]() { //
-        m_screen.PlayAudioOneTime("assets/Sound/button.wav");
+    m_start_game_layout->AddButtonElement("Back to Main Menu", {startPos.x, startPos.y + 5 * offsetY}, [this]() { //
+        m_screen.PlayAudioOneTime(CONSTANTS::SOUND_BUTTON_PATH);
         goToMainMenu();
     });
 }
 
 void MainLayoutGroup::createGameLayout()
 {
-    constexpr sf::Vector2f startPos = {50.f, 150.f};
+    constexpr sf::Vector2f startPos = {100.f, 250.f};
     constexpr float offsetY = 75.f;
 
     // title
     // clang-format off
-    m_game_layout->AddTextElement("How To Play", {50.f, 50.f}, {
+    m_game_layout->AddTextElement("Fill All Cells", {100.f, 150.f}, {
         .fontSize = 48, //
     });
     // clang-format on
@@ -178,8 +161,8 @@ void MainLayoutGroup::createGameLayout()
     m_sudoku_grid_element_id = createSudokuBoard(m_game_layout, startPos, BOARD_SIZE, board);
 
     // show solution button
-    m_show_solution_button_id = m_game_layout->AddButtonElement("Show Solution", {startPos.x, startPos.y + 5 * offsetY}, [this, BOARD_SIZE, startPos]() { //
-        m_screen.PlayAudioOneTime("assets/Sound/button.wav");
+    m_show_solution_button_id = m_game_layout->AddButtonElement("Show Solution", {startPos.x + 350.f, startPos.y + 5 * offsetY}, [this, BOARD_SIZE, startPos]() { //
+        m_screen.PlayAudioOneTime(CONSTANTS::SOUND_BUTTON_PATH);
         m_sudoku->autoSolve();
 
         int board[9][9];
@@ -208,31 +191,31 @@ void MainLayoutGroup::createGameLayout()
         .fontSize = 24,
         .fontStyle = sf::Text::Style::Bold,
     };
-    m_game_status_text_id = m_game_layout->AddTextElement("Playing", {startPos.x, startPos.y + 6 * offsetY}, statusTextConfig);
+    m_game_status_text_id = m_game_layout->AddTextElement("Playing", {450.f, 532.f}, statusTextConfig);
     m_game_layout->GetTextElementById(m_game_status_text_id)->SetHidden(true);
 
     // back button
-    m_game_layout->AddButtonElement("Go to Game Menu", {startPos.x, startPos.y + 7 * offsetY}, [this]() { //
-        m_screen.PlayAudioOneTime("assets/Sound/button.wav");
+    m_game_layout->AddButtonElement("Go to Game Menu", {startPos.x, startPos.y + 5 * offsetY}, [this]() { //
+        m_screen.PlayAudioOneTime(CONSTANTS::SOUND_BUTTON_PATH);
         goToStartGame();
     });
 }
 
 void MainLayoutGroup::createHowToPlayLayout()
 {
-    constexpr sf::Vector2f startPos = {50.f, 150.f};
+    constexpr sf::Vector2f startPos = {100.f, 250.f};
     constexpr float offsetY = 75.f;
 
     // title
     // clang-format off
-    m_how_to_play_layout->AddTextElement("How To Play", {50.f, 50.f}, {
+    m_how_to_play_layout->AddTextElement("How To Play", {100.f, 150.f}, {
         .fontSize = 48, //
     });
     // clang-format on
 
     // Sudoku board at top
     constexpr sf::Vector2f boardSize = {300.f, 300.f};
-    
+
     int sampleBoard[9][9] = {
         {5, 3, 0, 0, 7, 0, 0, 0, 0},
         {6, 0, 0, 1, 9, 5, 0, 0, 0},
@@ -242,54 +225,37 @@ void MainLayoutGroup::createHowToPlayLayout()
         {7, 0, 0, 0, 2, 0, 0, 0, 6},
         {0, 6, 0, 0, 0, 0, 2, 8, 0},
         {0, 0, 0, 4, 1, 9, 0, 0, 5},
-        {0, 0, 0, 0, 8, 0, 0, 7, 9}};
+        {0, 0, 0, 0, 8, 0, 0, 7, 9} //
+    };
 
-    createSudokuBoard(m_how_to_play_layout, {startPos.x, startPos.y}, boardSize, sampleBoard);
+    createSudokuBoard(m_how_to_play_layout, {startPos.x, startPos.y}, boardSize, sampleBoard, true);
 
     // Sudoku rules text (always visible)
     m_how_to_play_layout->AddTextElement(
         "SUDOKU RULES:\n\n"
-        "1. Fill the 9x9 grid with numbers 1-9\n\n"
-        "2. Each ROW must contain all digits\n   from 1 to 9 without repetition\n\n"
-        "3. Each COLUMN must contain all digits\n   from 1 to 9 without repetition\n\n"
-        "4. Each 3x3 BOX must contain all digits\n   from 1 to 9 without repetition\n\n"
-        "5. Use the given clues to deduce\n   the missing numbers\n\n"
-        "6. Click a cell and press 1-9 to\n   fill in numbers",
+        "1. Fill the cells with 1-9\n\n"
+        "2. Each ROW must contain all\ndigits from 1 to 9 distinctively\n\n"
+        "3. Each COLUMN must contain all\ndigits from 1 to 9 distinctively\n\n"
+        "4. Each 3x3 BOX must contain all\ndigits from 1 to 9 distinctively\n\n"
+        "5. Use the given clues to deduce\nthe missing numbers\n\n"
+        "6. Click a cell and press 1-9 to\nfill in numbers",
         {startPos.x + boardSize.x + 50.f, startPos.y});
 
     // back button
-    m_how_to_play_layout->AddButtonElement("Back to Main Menu", {startPos.x, startPos.y + 7 * offsetY}, [this]() { //
-        m_screen.PlayAudioOneTime("assets/Sound/button.wav");
-        goToMainMenu();
-    });
-}
-
-void MainLayoutGroup::createHighScoresLayout()
-{
-    constexpr sf::Vector2f startPos = {50.f, 150.f};
-    constexpr float offsetY = 75.f;
-
-    // title
-    // clang-format off
-    m_high_scores_layout->AddTextElement("High Scores", {50.f, 50.f}, {
-        .fontSize = 48, //
-    });
-    // clang-format on
-
-    m_high_scores_layout->AddButtonElement("Back to Main Menu", {startPos.x, startPos.y + 7 * offsetY}, [this]() { //
-        m_screen.PlayAudioOneTime("assets/Sound/button.wav");
+    m_how_to_play_layout->AddButtonElement("Back to Main Menu", {startPos.x, startPos.y + 5 * offsetY}, [this]() { //
+        m_screen.PlayAudioOneTime(CONSTANTS::SOUND_BUTTON_PATH);
         goToMainMenu();
     });
 }
 
 void MainLayoutGroup::createCreditsLayout()
 {
-    constexpr sf::Vector2f startPos = {50.f, 150.f};
+    constexpr sf::Vector2f startPos = {100.f, 250.f};
     constexpr float offsetY = 75.f;
 
     // title
     // clang-format off
-    m_credits_layout->AddTextElement("Credits", {50.f, 50.f}, {
+    m_credits_layout->AddTextElement("Credits", {100.f, 150.f}, {
         .fontSize = 48, //
     });
     // clang-format on
@@ -297,8 +263,8 @@ void MainLayoutGroup::createCreditsLayout()
     // credits text (always visible)
     m_credits_layout->AddTextElement("Muhammad Mujtaba\nSheharyar Khalid\nAzhan Ali", {startPos.x, startPos.y + offsetY});
 
-    m_credits_layout->AddButtonElement("Back to Main Menu", {startPos.x, startPos.y + 7 * offsetY}, [this]() { //
-        m_screen.PlayAudioOneTime("assets/Sound/button.wav");
+    m_credits_layout->AddButtonElement("Back to Main Menu", {startPos.x, startPos.y + 5 * offsetY}, [this]() { //
+        m_screen.PlayAudioOneTime(CONSTANTS::SOUND_BUTTON_PATH);
         goToMainMenu();
     });
 }
@@ -318,6 +284,8 @@ void MainLayoutGroup::goToGame()
     if (!m_game_layout)
         return;
 
+    setGameStatus(State::Playing);
+
     // reset
     m_game_layout->ClearLayout();
     m_last_clicked_cell_x = std::nullopt;
@@ -331,11 +299,6 @@ void MainLayoutGroup::goToGame()
 void MainLayoutGroup::goToHowToPlay()
 {
     m_screen.ChangeUILayout(*m_how_to_play_layout);
-}
-
-void MainLayoutGroup::goToHighScores()
-{
-    m_screen.ChangeUILayout(*m_high_scores_layout);
 }
 
 void MainLayoutGroup::goToCredits()
@@ -398,7 +361,7 @@ void MainLayoutGroup::setGameStatus(const State &state)
     }
 }
 
-uint16_t MainLayoutGroup::createSudokuBoard(engine::UILayout *layout, const sf::Vector2f &position, const sf::Vector2f &size, int board[9][9])
+uint16_t MainLayoutGroup::createSudokuBoard(engine::UILayout *layout, const sf::Vector2f &position, const sf::Vector2f &size, int board[9][9], bool disabled)
 {
     uint16_t gridID = layout->AddClickableGridElement(position, sf::Vector2f{size.x / 9.f, size.y / 9.f}, 9, 9);
     auto *gridElement = layout->GetClickableGridElementById(gridID);
@@ -428,7 +391,7 @@ uint16_t MainLayoutGroup::createSudokuBoard(engine::UILayout *layout, const sf::
 
         if ((i + 1) % 3 == 0)
         {
-            lineConfig.color = sf::Color(200, 200, 200);
+            lineConfig.color = sf::Color(89, 100, 117);
             lineConfig.thickness = 5.f;
         }
 
@@ -444,16 +407,20 @@ uint16_t MainLayoutGroup::createSudokuBoard(engine::UILayout *layout, const sf::
 
         if ((i + 1) % 3 == 0)
         {
-            lineConfig.color = sf::Color(200, 200, 200);
+            lineConfig.color = sf::Color(89, 100, 117);
             lineConfig.thickness = 5.f;
         }
 
         gridElement->SetHorizontalLineConfig(i, lineConfig);
     }
 
+    // dont add callbacks if disabled
+    if (disabled)
+        return gridID;
+
     // click callback
     gridElement->SetCellClickCallback([this, gridElement](int x, int y, std::string &cellText) { //
-        m_screen.PlayAudioOneTime("assets/Sound/button.wav");
+        m_screen.PlayAudioOneTime(CONSTANTS::SOUND_BUTTON_PATH);
         sudokuGridCellClick(x, y, gridElement);
     });
 
@@ -467,6 +434,10 @@ uint16_t MainLayoutGroup::createSudokuBoard(engine::UILayout *layout, const sf::
 
 void MainLayoutGroup::sudokuGridCellClick(size_t x, size_t y, engine::gui::elements::ClickableGridElement *gridElement)
 {
+    // if won or lose leave
+    if (m_game_state != State::Playing)
+        return;
+
     // store last clicked cell
     m_last_clicked_cell_x = x;
     m_last_clicked_cell_y = y;
@@ -591,6 +562,10 @@ void MainLayoutGroup::highlightSudokuCells(engine::gui::elements::ClickableGridE
         if (col == static_cast<size_t>(x))
             continue;
 
+        // only highlight pre fillec
+        if (!element->IsCellDisabled(col, y))
+            continue;
+
         element->SetCellConfig(col, y, SudokuBoardStyles::highlightedCell);
     }
 
@@ -600,20 +575,10 @@ void MainLayoutGroup::highlightSudokuCells(engine::gui::elements::ClickableGridE
         if (row == static_cast<size_t>(y))
             continue;
 
+        // only highlight pre fillec
+        if (!element->IsCellDisabled(x, row))
+            continue;
+
         element->SetCellConfig(x, row, SudokuBoardStyles::highlightedCell);
-    }
-
-    // highlight box
-    size_t boxStartX = (x / 3) * 3;
-    size_t boxStartY = (y / 3) * 3;
-    for (size_t row = boxStartY; row < boxStartY + 3; row++)
-    {
-        for (size_t col = boxStartX; col < boxStartX + 3; col++)
-        {
-            if (col == static_cast<size_t>(x) || row == static_cast<size_t>(y))
-                continue;
-
-            element->SetCellConfig(col, row, SudokuBoardStyles::highlightedCell);
-        }
     }
 }

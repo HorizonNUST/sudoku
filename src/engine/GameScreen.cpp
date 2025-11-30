@@ -84,13 +84,13 @@ void engine::GameScreen::SetBackgroundMusic(const std::string &path)
     backgroundMusic.play();
 }
 
-void engine::GameScreen::PlayAudioOneTime(const std::string &path)
+void engine::GameScreen::PlayAudioOneTime(const std::string_view &path)
 {
     static sf::Sound sound(soundBuffer);
     // Load the sound buffer from file
-    if (!soundBuffer.loadFromFile(path))
+    if (!soundBuffer.loadFromFile(std::string(path)))
     {
-        throw std::runtime_error("Failed to load sound buffer from file: " + path);
+        throw std::runtime_error("Failed to load sound buffer from file: " + std::string(path));
     }
     sound.setVolume(80.f);
     sound.play();

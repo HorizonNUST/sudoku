@@ -29,21 +29,18 @@ private:
     engine::UILayout *m_start_game_layout = nullptr;
     engine::UILayout *m_game_layout = nullptr;
     engine::UILayout *m_how_to_play_layout = nullptr;
-    engine::UILayout *m_high_scores_layout = nullptr;
     engine::UILayout *m_credits_layout = nullptr;
 
     void createMainMenuLayout();
     void createStartGameLayout();
     void createGameLayout();
     void createHowToPlayLayout();
-    void createHighScoresLayout();
     void createCreditsLayout();
 
     void goToMainMenu();
     void goToStartGame();
     void goToGame();
     void goToHowToPlay();
-    void goToHighScores();
     void goToCredits();
 
     // game
@@ -76,7 +73,7 @@ private:
     // sudoku
     Sudoku *m_sudoku = nullptr;
 
-    uint16_t createSudokuBoard(engine::UILayout *layout, const sf::Vector2f &position, const sf::Vector2f &size, int board[9][9]);
+    uint16_t createSudokuBoard(engine::UILayout *layout, const sf::Vector2f &position, const sf::Vector2f &size, int board[9][9], bool disabled = false);
     void sudokuGridCellClick(size_t x, size_t y, engine::gui::elements::ClickableGridElement *element);
     void sudokuGridCellUpdate(engine::gui::elements::ClickableGridElement *element);
     void highlightSudokuCells(engine::gui::elements::ClickableGridElement *element, size_t x, size_t y);

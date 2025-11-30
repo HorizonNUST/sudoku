@@ -47,7 +47,7 @@ namespace engine
 
         /// @brief To play an audio file one time from a file path
         /// @param path Path to the audio file
-        static void PlayAudioOneTime(const std::string &path);
+        static void PlayAudioOneTime(const std::string_view &path);
 
         /// @brief To add update callback which will be called every frame
         /// @param callback Function to be called every frame with `GameScreenData`

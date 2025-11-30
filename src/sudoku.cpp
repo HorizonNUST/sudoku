@@ -299,3 +299,21 @@ int Sudoku::getScore() const
 {
     return score;
 }
+
+void Sudoku::setCell(int row, int col, int value)
+{
+    // Basic bounds check
+    if (row < 0 || row >= 9 || col < 0 || col >= 9)
+    {
+        return;
+    }
+
+    // Prevent modifying fixed cells
+    if (fixed[row][col])
+    {
+        return;
+    }
+
+    // Insert into 2D array
+    grid[row][col] = value;
+}

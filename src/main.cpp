@@ -6,7 +6,7 @@ using namespace engine;
 
 int main()
 {
-    GameScreen screen({800u, 600u});
+    GameScreen screen({1024u, 768u});
     MainLayoutGroup mainLayoutGroup{screen};
     screen.AddUpdateCallback([&mainLayoutGroup](const GameScreenData &data) {
         mainLayoutGroup.Update(data);

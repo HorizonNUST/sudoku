@@ -59,4 +59,6 @@ public:
     bool sameCol(int col) const;
     bool sameBox(int row, int col) const;
     int getScore() const;
+
+    void setCell(int row, int col, int value);
 };

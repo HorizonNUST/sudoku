@@ -109,11 +109,6 @@ namespace engine::gui::elements
             sf::VertexArray vertices;
         };
 
-        // // per-line configs
-        // std::vector<ClickableGridElementLineConfig> m_lines_config;
-        // // lines in between cells
-        // std::vector<sf::VertexArray> m_lines;
-
         std::vector<Line> m_vertical_lines;
         std::vector<Line> m_horizontal_lines;
         std::vector<Cell> m_cells;

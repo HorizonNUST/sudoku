@@ -11,6 +11,13 @@ struct GameConfig
     Difficulty difficulty;
 };
 
+enum class State
+{
+    Playing,
+    Won,
+    Lost
+};
+
 class MainLayoutGroup
 {
 private:
@@ -37,7 +44,9 @@ private:
     void goToHighScores();
     void goToCredits();
 
+    // game
     GameConfig m_game_config{Difficulty::Easy};
+    State m_game_state{State::Playing};
 
     // utils
     bool m_was_key_pressed_last_frame[static_cast<size_t>(sf::Keyboard::KeyCount)] = {false};
@@ -53,16 +62,22 @@ private:
 
     void updateStartGameLayoutButtonsState();
 
+    // game
+    uint16_t m_sudoku_grid_element_id{};
+    uint16_t m_show_solution_button_id{};
+    uint16_t m_game_status_text_id{};
+
+    void setGameStatus(const State& state);
+
     // credits
     uint16_t m_credits_sample_text_id{};
 
     // sudoku
     Sudoku *m_sudoku = nullptr;
 
-    void createSudokuBoard(engine::UILayout *layout, const sf::Vector2f &position, const sf::Vector2f &size, int board[9][9]);
-
+    uint16_t createSudokuBoard(engine::UILayout *layout, const sf::Vector2f &position, const sf::Vector2f &size, int board[9][9]);
+    void sudokuGridCellClick(size_t x, size_t y, engine::gui::elements::ClickableGridElement *element);
     void sudokuGridCellUpdate(engine::gui::elements::ClickableGridElement *element);
-
     void highlightSudokuCells(engine::gui::elements::ClickableGridElement *element, size_t x, size_t y);
 
     std::optional<int> m_last_clicked_cell_x;

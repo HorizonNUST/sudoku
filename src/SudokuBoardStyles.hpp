@@ -19,8 +19,8 @@ struct SudokuBoardStyles
     };
 
     static inline const engine::gui::elements::ClickableGridElementCellConfig highlightedCell = {
-        .fontColor = sf::Color(0, 166, 118),
-        .fillCellColor = sf::Color(50, 50, 50),
+        .fontColor = sf::Color(89, 100, 117),
+        .fillCellColor = sf::Color(0.114 * 255, 0.129 * 255, 0.176 * 255),
     };
 
     static inline const engine::gui::elements::ClickableGridElementCellConfig invalidCell = {
@@ -29,9 +29,13 @@ struct SudokuBoardStyles
     };
 
     // button styles
-    static inline const engine::gui::elements::ButtonConfig defaultToggleButtonConfig = {};
+    static inline const engine::gui::elements::ButtonConfig defaultToggleButtonConfig = {
+        .outlineThickness = 3.f,
+        .outlineColor = sf::Color::White,
+    };
     static inline const engine::gui::elements::ButtonConfig selectedToggleButtonConfig = {
-        .fontColor = sf::Color(89, 100, 117),
+        .outlineThickness = 3.f,
+        .outlineColor = sf::Color(89, 100, 117),
     };
 
     // text styles (TODO)
